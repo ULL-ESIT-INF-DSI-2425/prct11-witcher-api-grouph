@@ -1,0 +1,229 @@
+{
+  "items": [
+    {
+      "id": "A-1",
+      "name": "Griffin Armor",
+      "description": "A medium armor set for mages.",
+      "material": "Dragon Scales",
+      "weight": 12.5,
+      "price": 750
+    },
+    {
+      "id": "W-2",
+      "name": "Aerondight",
+      "description": "A legendary silver sword.",
+      "material": "Reinforced Silver",
+      "weight": 3.8,
+      "price": 2500
+    },
+    {
+      "id": "P-3",
+      "name": "Swallow",
+      "description": "Accelerates vitality regeneration.",
+      "material": "Celandine Flower",
+      "weight": 0.5,
+      "price": 100,
+      "effect": "Unknown Effect"
+    },
+    {
+      "id": "A-4",
+      "name": "Bear Armor",
+      "description": "Heavy armor for strong warriors.",
+      "material": "Hardened Leather",
+      "weight": 16,
+      "price": 900
+    },
+    {
+      "id": "W-5",
+      "name": "Iris",
+      "description": "A powerful steel sword.",
+      "material": "Elven Steel",
+      "weight": 3.5,
+      "price": 1400
+    },
+    {
+      "id": "P-6",
+      "name": "Thunderbolt",
+      "description": "Boosts strength in combat.",
+      "material": "Griffin Marrow",
+      "weight": 0.6,
+      "price": 120,
+      "effect": "Unknown Effect"
+    },
+    {
+      "id": "A-7",
+      "name": "Feline Armor",
+      "description": "Light armor for agile warriors.",
+      "material": "Leather",
+      "weight": 9.2,
+      "price": 600
+    },
+    {
+      "id": "W-8",
+      "name": "Gwestog",
+      "description": "A Skellige greatsword.",
+      "material": "Meteoric Steel",
+      "weight": 4,
+      "price": 1800
+    },
+    {
+      "id": "P-9",
+      "name": "Cat",
+      "description": "Grants night vision.",
+      "material": "Mandrake",
+      "weight": 0.4,
+      "price": 80,
+      "effect": "Unknown Effect"
+    },
+    {
+      "id": "A-10",
+      "name": "Manticore Armor",
+      "description": "A balanced armor set.",
+      "material": "Steel Mesh",
+      "weight": 13,
+      "price": 850
+    },
+    {
+      "id": "W-11",
+      "name": "Viper Sword",
+      "description": "A venomous blade.",
+      "material": "Monster Bone",
+      "weight": 3.2,
+      "price": 1600
+    },
+    {
+      "id": "P-12",
+      "name": "Black Blood",
+      "description": "Harms vampires upon bite.",
+      "material": "Ghoul Blood",
+      "weight": 0.5,
+      "price": 150,
+      "effect": "Unknown Effect"
+    },
+    {
+      "id": "A-13",
+      "name": "Nilfgaardian Armor",
+      "description": "A finely crafted armor.",
+      "material": "Silver Mesh",
+      "weight": 14.5,
+      "price": 950
+    },
+    {
+      "id": "W-14",
+      "name": "Harvall",
+      "description": "A reliable longsword.",
+      "material": "Steel",
+      "weight": 3.9,
+      "price": 1100
+    },
+    {
+      "id": "P-15",
+      "name": "Tawny Owl",
+      "description": "Reduces fatigue and increases focus.",
+      "material": "Bryonia Root",
+      "weight": 0.5,
+      "price": 90,
+      "effect": "Unknown Effect"
+    },
+    {
+      "id": "A-16",
+      "name": "Toussaint Knight's Armor",
+      "description": "A nobleman's armor.",
+      "material": "Enchanted Fabric",
+      "weight": 11.8,
+      "price": 1200
+    },
+    {
+      "id": "W-17",
+      "name": "Tor'Haerne",
+      "description": "A unique elven sword.",
+      "material": "Mithril",
+      "weight": 3.6,
+      "price": 2000
+    },
+    {
+      "id": "P-18",
+      "name": "Golden Oriole",
+      "description": "Neutralizes poisons.",
+      "material": "Vervain",
+      "weight": 0.5,
+      "price": 110,
+      "effect": "Unknown Effect"
+    },
+    {
+      "id": "A-19",
+      "name": "Gorgon Armor",
+      "description": "A legendary armor of myth.",
+      "material": "Adamantite Plates",
+      "weight": 17.5,
+      "price": 2000
+    },
+    {
+      "id": "W-20",
+      "name": "Moonblade",
+      "description": "A sword blessed by the moon.",
+      "material": "Volcanic Glass",
+      "weight": 4.2,
+      "price": 2200
+    },
+    {
+      "id": "W-1742748790535",
+      "name": "palaso",
+      "description": "palo normal, pero muy grande",
+      "material": "Ebony asd",
+      "weight": 345,
+      "price": 2
+    },
+    {
+      "id": "A-1742749186410",
+      "name": "camisa sixsilk",
+      "description": "se muy de cani bro",
+      "material": "Leather",
+      "weight": 2,
+      "price": 1
+    },
+    {
+      "id": "P-1742764508616",
+      "name": "Vision Nocturna",
+      "description": "Ves por la noche",
+      "material": "Mandrake",
+      "weight": 0.5,
+      "price": 80,
+      "effect": "Unknown Effect"
+    },
+    {
+      "id": "P-1742766892657",
+      "name": "Fuerza",
+      "description": "Te da fuerza",
+      "material": "Crushed Kikimora Skull",
+      "weight": 1,
+      "price": 98,
+      "effect": "None"
+    },
+    {
+      "id": "A-1742766909843",
+      "name": "Diamante",
+      "description": "es de diamante",
+      "material": "Adamantite Plates",
+      "weight": 4,
+      "price": 29
+    },
+    {
+      "id": "W-1742766928977",
+      "name": "espada",
+      "description": "brutal espada",
+      "material": "Adamantite",
+      "weight": 1,
+      "price": 56
+    },
+    {
+      "id": "P-1742767034899",
+      "name": "Speed",
+      "description": "velocidad",
+      "material": "si",
+      "weight": 1,
+      "price": 2,
+      "effect": "None"
+    }
+  ]
+}
