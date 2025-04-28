@@ -1,6 +1,6 @@
 import { Document, connect, model, Schema } from 'mongoose';
 import validator from 'validator';
-import { GenericMaterial } from '../item.js';
+import { GenericMaterial, GenericMaterialValues } from '../item.js';
 
 connect('mongodb://127.0.0.1:27017/Client').then(() => {
   console.log('Connected to the database');
@@ -25,6 +25,7 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
         throw new Error('Item name must not be empty');
       }
     },
+    unique: true,
   },
   description: {
     type: String,
@@ -34,42 +35,16 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
         throw new Error('Item description must not be empty');
       }
     },
+    unique: true,
   },
   material: {
     type: String,
     required: true,
-    enum: [
-      "Steel",
-      "Elven Steel",
-      "Meteoric Steel",
-      "Silver",
-      "Reinforced Silver",
-      "Ebony Wood",
-      "Monster Bone",
-      "Volcanic Glass",
-      "Mithril",
-      "Adamantite",
-      "Leather",
-      "Hardened Leather",
-      "Steel Mesh",
-      "Silver Mesh",
-      "Dragon Scales",
-      "Adamantite Plates",
-      "Mithril",
-      "Enchanted Fabric",
-      "Monster Bone",
-      "Insectoid Chitin",
-      "Celandine Flower",
-      "Mandrake",
-      "Vervain",
-      "Bryonia Root",
-      "Crushed Kikimora Skull",
-      "Nekker Gland",
-      "Wraith Essence",
-      "Griffin Marrow",
-      "Endrega Mucus",
-      "Ghoul Blood"
-    ],
+    validate: (value: string) => {
+      if (value.length <= 0) {
+        throw new Error('Item material must not be empty');
+      }
+    },
   },
   weight: {
     type: Number,
@@ -89,23 +64,112 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
       }
     }
   },
-});
+}, { discriminatorKey: 'kind', collection: 'items' });
 
 const Item = model<ItemDocumentInterface>('Item', ItemSchema);
 
-const item = new Item({
-  name: 'Steel Sword',
-  description: 'A sword made of steel.',
+
+const WeaponSchema = new Schema<ItemDocumentInterface> ({
+  material: {
+    type: String,
+    required: true,
+    enum: GenericMaterialValues.WeaponMaterial,
+    validate: (value: string) => {
+      if (value.length <= 0) {
+        throw new Error('Weapon material must not be empty');
+      }
+    },
+  },
+});
+const Weapon = Item.discriminator<ItemDocumentInterface>('Weapon', WeaponSchema);
+
+
+const ArmorSchema = new Schema<ItemDocumentInterface> ({
+  material: {
+    type: String,
+    required: true,
+    enum: GenericMaterialValues.ArmorMaterial,
+    validate: (value: string) => {
+      if (value.length <= 0) {
+        throw new Error('Armor material must not be empty');
+      }
+    }
+  },
+});
+const Armor = Item.discriminator<ItemDocumentInterface>('Armor', ArmorSchema);
+
+interface PotionDocumentInterface extends ItemDocumentInterface {
+  effect: string;
+}
+const PotionSchema = new Schema<PotionDocumentInterface>({
+  material: {
+    type: String,
+    required: true,
+    enum: GenericMaterialValues.PotionMaterial,
+    validate: (value: string) => {
+      if (value.length <= 0) {
+        throw new Error('Potion material must not be empty');
+      }
+    },
+  },
+  effect: {
+    type: String,
+    required: true,
+    validate: (value: string) => {
+      if (value.length <= 0) {
+        throw new Error('Potion effect must not be empty');
+      }
+      if (!validator.isAlpha(value)) {
+        throw new Error('Potion effect must contain only letters');
+      }
+    },
+  },
+});
+
+const Potion = Item.discriminator<PotionDocumentInterface>('Potion', PotionSchema);
+
+const sword = new Weapon({
+  name: 'Sword',
+  description: 'A sharp blade', 
   material: 'Steel',
-  weight: 1.5,
+  weight: 3,
   price: 100,
 });
 
-item
-  .save()
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+sword.save().then(() => {
+  console.log('Sword saved');
+  console.log(sword);
+}).catch((error) => {
+  console.error('Error saving sword:', error);
+});
+
+const armor = new Armor({
+  name: 'Armor',
+  description: 'A protective suit',
+  material: 'Leather',
+  weight: 10,
+  price: 200,
+});
+
+armor.save().then(() => {
+  console.log('Armor saved');
+  console.log(armor);
+}).catch((error) => {
+  console.error('Error saving armor:', error);
+});
+
+const potion = new Potion({
+  name: 'Healing Potion',
+  description: 'Restores health',
+  material: 'Mandrake',
+  weight: 1,
+  price: 50,
+  effect: 'Heal',
+});
+potion.save().then(() => {
+  console.log('Potion saved');
+  console.log(potion);
+}
+).catch((error) => {
+  console.error('Error saving potion:', error);
+});

@@ -47,7 +47,44 @@ export type PotionMaterial =
  * type that represents the possible materials for an item
  */
 export type GenericMaterial = ArmorMaterial | WeaponMaterial | PotionMaterial;
-
+export const GenericMaterialValues = {
+  ArmorMaterial: [
+    "Leather",
+    "Hardened Leather",
+    "Steel Mesh",
+    "Silver Mesh",
+    "Dragon Scales",
+    "Adamantite Plates",
+    "Mithril",
+    "Enchanted Fabric",
+    "Monster Bone",
+    "Insectoid Chitin",
+  ],
+  WeaponMaterial: [
+    "Steel",
+    "Elven Steel",
+    "Meteoric Steel",
+    "Silver",
+    "Reinforced Silver",
+    "Ebony Wood",
+    "Monster Bone",
+    "Volcanic Glass",
+    "Mithril",
+    "Adamantite",
+  ],
+  PotionMaterial: [
+    "Celandine Flower",
+    "Mandrake",
+    "Vervain",
+    "Bryonia Root",
+    "Crushed Kikimora Skull",
+    "Nekker Gland",
+    "Wraith Essence",
+    "Griffin Marrow",
+    "Endrega Mucus",
+    "Ghoul Blood",
+  ],
+} as const;
 /**
  * type that represents the possible effects for a potion
  */
