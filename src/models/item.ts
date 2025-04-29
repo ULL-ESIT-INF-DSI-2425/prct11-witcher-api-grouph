@@ -174,7 +174,7 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
   },
 }, { discriminatorKey: 'kind', collection: 'items' });
 
-const Item = model<ItemDocumentInterface>('Item', ItemSchema);
+export const Item = model<ItemDocumentInterface>('Item', ItemSchema);
 
 
 const WeaponSchema = new Schema<ItemDocumentInterface> ({
@@ -185,7 +185,7 @@ const WeaponSchema = new Schema<ItemDocumentInterface> ({
   },
 });
 
-const Weapon = Item.discriminator<ItemDocumentInterface>('Weapon', WeaponSchema);
+export const Weapon = Item.discriminator<ItemDocumentInterface>('Weapon', WeaponSchema);
 
 
 const ArmorSchema = new Schema<ItemDocumentInterface> ({
@@ -196,7 +196,7 @@ const ArmorSchema = new Schema<ItemDocumentInterface> ({
   },
 });
 
-const Armor = Item.discriminator<ItemDocumentInterface>('Armor', ArmorSchema);
+export const Armor = Item.discriminator<ItemDocumentInterface>('Armor', ArmorSchema);
 
 interface PotionDocumentInterface extends ItemDocumentInterface {
   effect: Effect;
@@ -220,7 +220,7 @@ const PotionSchema = new Schema<PotionDocumentInterface>({
   },
 });
 
-const Potion = Item.discriminator<PotionDocumentInterface>('Potion', PotionSchema);
+export const Potion = Item.discriminator<PotionDocumentInterface>('Potion', PotionSchema);
 
 /**
 const sword = new Weapon({

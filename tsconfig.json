@@ -1,6 +1,6 @@
 {
   "include": [
-    "./src", "pr7/collections", "pr7/hunter.ts", "pr7/inventory.ts", "pr7/merchant.ts", "pr7/transaction.ts", "pr7/item.ts", "pr7/inquirer2",
+    "./src",
   ],
   "exclude": [
     "./tests",
