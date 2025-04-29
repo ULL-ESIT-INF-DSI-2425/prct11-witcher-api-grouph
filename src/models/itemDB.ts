@@ -1,6 +1,6 @@
 import { Document, connect, model, Schema } from 'mongoose';
 import validator from 'validator';
-import { GenericMaterial, GenericMaterialValues } from '../item.js';
+import { GenericMaterial, GenericMaterialValues } from '../../pr7/item.js';
 
 connect('mongodb://127.0.0.1:27017/Client').then(() => {
   console.log('Connected to the database');
