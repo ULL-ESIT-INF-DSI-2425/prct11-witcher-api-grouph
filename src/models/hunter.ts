@@ -1,16 +1,35 @@
 import { Document, connect, model, Schema } from 'mongoose';
 import validator from 'validator';
 
-connect('mongodb://127.0.0.1:27017/Client').then(() => {
-  console.log('Connected to the database');
-}).catch(() => {
-  console.log('Something went wrong when conecting to the database');
-});
+type Race =
+  | "Human"
+  | "Elf"
+  | "Dwarf"
+  | "Halfling"
+  | "Warlock"
+  | "Lycanthropic"
+  | "Vran"
+  | "Dryad"
+  | "Spectral Cat"
+  | "Half-Elf";
+
+const RaceValues = [
+  "Human",
+  "Elf",
+  "Dwarf",
+  "Halfling",
+  "Warlock",
+  "Lycanthropic",
+  "Vran",
+  "Dryad",
+  "Spectral Cat",
+  "Half-Elf",
+] as const;
 
 interface ClientDocumentInterface extends Document {
   name: string,
-  story: string,
-  profession: 'Hunter' | 'Witcher' | 'Knight' | 'Royal' | 'Villager'
+  race: Race,
+  location: string
 }
 
 const ClientSchema = new Schema<ClientDocumentInterface>({
@@ -18,30 +37,36 @@ const ClientSchema = new Schema<ClientDocumentInterface>({
     type: String,
     required: true,
     default: 'John Doe',
-    validate: (value: string) => {
-        if (!value.match(/^[A-Z]/)) {
-          throw new Error('Note title must start with a capital letter');
-        } else if (!validator.default.isAlphanumeric(value)) {
-          throw new Error('Note title must contain alphanumeric characters only');
-        }
-      },
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Hunter name must not be empty',
+    },
+    unique: true,
   },
-  story: {
+  race: {
     type: String,
     required: true,
-    default: 'None',
+    default: 'Human',
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Race must not be empty',
+    },
+    enum: RaceValues,
   },
-  profession: {
+  location: {
     type: String,
     required: true,
-    default: 'Witcher',
-    enum: ['Hunter', 'Witcher', 'Knight', 'Royal', 'Villager']
-    
-  },
+    default: 'Kaer Morhen',
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Location must not be empty',
+    },
+  }
 });
 
-const Client = model<ClientDocumentInterface>('Client', ClientSchema);
+export const Client = model<ClientDocumentInterface>('Client', ClientSchema);
 
+/* 
 const note = new Client({
     name: 'Gerald',
     story: 'Comes from Rivia (I think).',
@@ -59,4 +84,4 @@ Client.find().then((client) => {
 }).catch((error) => {
     console.log('Uh oh, something went wrong\n\n\n' + error)
 })
-
+*/
