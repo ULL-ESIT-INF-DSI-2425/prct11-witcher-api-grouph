@@ -1,9 +1,9 @@
 import express from 'express';
 import './db/mongoose.js';
 
-import { defaultRouter } from './routers/default.js';
+import { defaultRouter } from './routers/defaultRouter.js';
 //import { clientRouter } from './routers/client.js';
-import { itemRouter } from './routers/item.js';
+import { itemRouter } from './routers/itemRouter.js';
 //import { goodsRouter } from './routers/goods.js';
 //import { transactionRouter } from './routers/transaction.js';
 
