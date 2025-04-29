@@ -95,7 +95,6 @@ itemRouter.get('/goods/:id', async (req, res) => {
   }
 });
 
-// Actualizar item por ID
 itemRouter.patch('/goods/:id', async (req, res) => {
   try {
     const allowedUpdates = ['name', 'description', 'material', 'weight', 'price'];
@@ -116,15 +115,22 @@ itemRouter.patch('/goods/:id', async (req, res) => {
   }
 });
 
-// Eliminar item por ID
+
 itemRouter.delete('/goods/:id', async (req, res) => {
   try {
-    const item = await Item.findByIdAndDelete(req.params.id);
+    const item = await Item.findById(req.params.id);
     if (!item) {
       return res.status(404).send({ error: "Item not found" });
     }
-    return res.status(200).send(item);
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+      await item.save();
+      return res.status(200).send({message: "Item quantity decreased", item});
+    } else {
+      await item.deleteOne();
+      return res.status(200).send({ message: "Item deleted", item });
+    }
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send({ error: "Error deleting item" });
   }
 });
