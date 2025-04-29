@@ -1,12 +1,124 @@
 import { Document, connect, model, Schema } from 'mongoose';
 import validator from 'validator';
-import { GenericMaterial, GenericMaterialValues } from '../../pr7/item.js';
 
-connect('mongodb://127.0.0.1:27017/Client').then(() => {
-  console.log('Connected to the database');
-}).catch(() => {
-  console.log('Something went wrong when conecting to the database');
-});
+/**
+ * type that represents the possible materials for a weapon
+ */
+export type WeaponMaterial =
+  | "Steel"
+  | "Elven Steel"
+  | "Meteoric Steel"
+  | "Silver"
+  | "Reinforced Silver"
+  | "Ebony Wood"
+  | "Monster Bone"
+  | "Volcanic Glass"
+  | "Mithril"
+  | "Adamantite";
+
+/**
+ * type that represents the possible materials for an armor
+ */
+export type ArmorMaterial =
+  | "Leather"
+  | "Hardened Leather"
+  | "Steel Mesh"
+  | "Silver Mesh"
+  | "Dragon Scales"
+  | "Adamantite Plates"
+  | "Mithril"
+  | "Enchanted Fabric"
+  | "Monster Bone"
+  | "Insectoid Chitin";
+
+/**
+ * type that represents the possible materials for a potion
+ */
+export type PotionMaterial =
+  | "Celandine Flower"
+  | "Mandrake"
+  | "Vervain"
+  | "Bryonia Root"
+  | "Crushed Kikimora Skull"
+  | "Nekker Gland"
+  | "Wraith Essence"
+  | "Griffin Marrow"
+  | "Endrega Mucus"
+  | "Ghoul Blood";
+
+/**
+ * type that represents the possible materials for an item
+ */
+export type GenericMaterial = ArmorMaterial | WeaponMaterial | PotionMaterial;
+export const GenericMaterialValues = {
+  ArmorMaterial: [
+    "Leather",
+    "Hardened Leather",
+    "Steel Mesh",
+    "Silver Mesh",
+    "Dragon Scales",
+    "Adamantite Plates",
+    "Mithril",
+    "Enchanted Fabric",
+    "Monster Bone",
+    "Insectoid Chitin",
+  ],
+  WeaponMaterial: [
+    "Steel",
+    "Elven Steel",
+    "Meteoric Steel",
+    "Silver",
+    "Reinforced Silver",
+    "Ebony Wood",
+    "Monster Bone",
+    "Volcanic Glass",
+    "Mithril",
+    "Adamantite",
+  ],
+  PotionMaterial: [
+    "Celandine Flower",
+    "Mandrake",
+    "Vervain",
+    "Bryonia Root",
+    "Crushed Kikimora Skull",
+    "Nekker Gland",
+    "Wraith Essence",
+    "Griffin Marrow",
+    "Endrega Mucus",
+    "Ghoul Blood",
+  ],
+} as const;
+
+/**
+ * type that represents the possible effects for a potion
+ */
+export type Effect =
+  | "Vitality Regeneration"
+  | "Night Vision"
+  | "Poison Resistance"
+  | "Strength Boost"
+  | "Speed Boost"
+  | "Increased Sign Damage"
+  | "Toxicity Reduction"
+  | "Invisible Creature Detection"
+  | "Temporary Enemy Paralysis"
+  | "Life Absorption"
+  | "Unknown Effect"
+  | "None";
+
+export const EffectValues = {
+  VitalityRegeneration: "Vitality Regeneration",
+  NightVision: "Night Vision",
+  PoisonResistance: "Poison Resistance",
+  StrengthBoost: "Strength Boost",
+  SpeedBoost: "Speed Boost",
+  IncreasedSignDamage: "Increased Sign Damage",
+  ToxicityReduction: "Toxicity Reduction",
+  InvisibleCreatureDetection: "Invisible Creature Detection",
+  TemporaryEnemyParalysis: "Temporary Enemy Paralysis",
+  LifeAbsorption: "Life Absorption",
+  UnknownEffect: "Unknown Effect",
+} as const;
 
 interface ItemDocumentInterface extends Document {
   name: string;
@@ -21,49 +133,44 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
   name: {
     type: String,
     required: true,
-    validate: (value: string) => {
-      if (value.length <= 0) {
-        throw new Error('Item name must not be empty');
-      }
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Item name must not be empty',
     },
     unique: true,
   },
   description: {
     type: String,
     required: true,
-    validate: (value: string) => {
-      if (value.length <= 0) {
-        throw new Error('Item description must not be empty');
-      }
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Item description must not be empty',
     },
     unique: true,
   },
   material: {
     type: String,
     required: true,
-    validate: (value: string) => {
-      if (value.length <= 0) {
-        throw new Error('Item material must not be empty');
-      }
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Item material must not be empty',
     },
   },
   weight: {
     type: Number,
     required: true,
-    validate: (value: number) => {
-      if (value <= 0) {
-        throw new Error('Item weight must be greater than 0');
-      }
+    validate: {
+      validator: (value: number) => validator.isFloat(value.toString(), { gt: 0 }),
+      message: 'Item weight must be greater than 0',
     },
   },
   price: {
     type: Number,
     required: true,
-    validate: (value: number) => {
-      if (value <= 0) {
-        throw new Error('Item price must be greater than 0');
-      }
-    }
+    validate: {
+      validator: (value: number) => validator.isFloat(value.toString(), { gt: 0 }),
+      message: 'Item price must be greater than 0',
+    },
   },
 }, { discriminatorKey: 'kind', collection: 'items' });
 
@@ -75,13 +182,9 @@ const WeaponSchema = new Schema<ItemDocumentInterface> ({
     type: String,
     required: true,
     enum: GenericMaterialValues.WeaponMaterial,
-    validate: (value: string) => {
-      if (value.length <= 0) {
-        throw new Error('Weapon material must not be empty');
-      }
-    },
   },
 });
+
 const Weapon = Item.discriminator<ItemDocumentInterface>('Weapon', WeaponSchema);
 
 
@@ -90,17 +193,13 @@ const ArmorSchema = new Schema<ItemDocumentInterface> ({
     type: String,
     required: true,
     enum: GenericMaterialValues.ArmorMaterial,
-    validate: (value: string) => {
-      if (value.length <= 0) {
-        throw new Error('Armor material must not be empty');
-      }
-    }
   },
 });
+
 const Armor = Item.discriminator<ItemDocumentInterface>('Armor', ArmorSchema);
 
 interface PotionDocumentInterface extends ItemDocumentInterface {
-  effect: string;
+  effect: Effect;
 }
 
 const PotionSchema = new Schema<PotionDocumentInterface>({
@@ -108,28 +207,22 @@ const PotionSchema = new Schema<PotionDocumentInterface>({
     type: String,
     required: true,
     enum: GenericMaterialValues.PotionMaterial,
-    validate: (value: string) => {
-      if (value.length <= 0) {
-        throw new Error('Potion material must not be empty');
-      }
-    },
   },
   effect: {
     type: String,
     required: true,
-    validate: (value: string) => {
-      if (value.length <= 0) {
-        throw new Error('Potion effect must not be empty');
-      }
-      if (!validator.isAlpha(value)) {
-        throw new Error('Potion effect must contain only letters');
-      }
+    enum: Object.values(EffectValues),
+    default: EffectValues.UnknownEffect,
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Potion effect must not be empty',
     },
   },
 });
 
 const Potion = Item.discriminator<PotionDocumentInterface>('Potion', PotionSchema);
 
+/**
 const sword = new Weapon({
   name: 'Sword',
   description: 'A sharp blade', 
@@ -175,3 +268,4 @@ potion.save().then(() => {
 ).catch((error) => {
   console.error('Error saving potion:', error);
 });
+*/
