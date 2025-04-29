@@ -3,7 +3,6 @@ import { Weapon, Armor, Potion, Item, GenericMaterialValues } from '../models/it
 
 export const itemRouter: express.Router = express.Router();
 
-// Crear item
 itemRouter.post('/goods', async (req, res) => {
   try {
     const { material } = req.body;
@@ -26,7 +25,6 @@ itemRouter.post('/goods', async (req, res) => {
   }
 });
 
-// Obtener todos los items
 itemRouter.get('/goods', async (req, res) => {
   try {
     const items = await Item.find({});
@@ -39,7 +37,45 @@ itemRouter.get('/goods', async (req, res) => {
   }
 });
 
-// Obtener item por ID
+// Weapons
+itemRouter.get('/goods/weapons', async (req, res) => {
+  try {
+    const weapons = await Weapon.find({});
+    if (weapons.length === 0) {
+      return res.status(404).send({ error: "There are no weapons" });
+    }
+    return res.status(200).send(weapons);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
+// Armor
+itemRouter.get('/goods/armor', async (req, res) => {
+  try {
+    const armors = await Armor.find({});
+    if (armors.length === 0) {
+      return res.status(404).send({ error: "There are no armors" });
+    }
+    return res.status(200).send(armors);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
+// Potions
+itemRouter.get('/goods/potions', async (req, res) => {
+  try {
+    const potions = await Potion.find({});
+    if (potions.length === 0) {
+      return res.status(404).send({ error: "There are no potions" });
+    }
+    return res.status(200).send(potions);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
 itemRouter.get('/goods/:id', async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
@@ -81,45 +117,6 @@ itemRouter.delete('/goods/:id', async (req, res) => {
       return res.status(404).send({ error: "Item not found" });
     }
     return res.status(200).send(item);
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
-
-// Obtener solo armas
-itemRouter.get('/goods/weapons', async (req, res) => {
-  try {
-    const weapons = await Weapon.find({});
-    if (!weapons.length) {
-      return res.status(404).send({ error: "There are no weapons" });
-    }
-    return res.status(200).send(weapons);
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
-
-// Obtener solo armaduras
-itemRouter.get('/goods/armor', async (req, res) => {
-  try {
-    const armors = await Armor.find({});
-    if (!armors.length) {
-      return res.status(404).send({ error: "There are no armors" });
-    }
-    return res.status(200).send(armors);
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-});
-
-// Obtener solo pociones
-itemRouter.get('/goods/potions', async (req, res) => {
-  try {
-    const potions = await Potion.find({});
-    if (!potions.length) {
-      return res.status(404).send({ error: "There are no potions" });
-    }
-    return res.status(200).send(potions);
   } catch (error) {
     return res.status(500).send(error);
   }
