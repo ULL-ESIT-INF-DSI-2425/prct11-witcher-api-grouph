@@ -12,14 +12,14 @@ export type Profession =
   | "Druid"
   | "Smuggler";
 
-connect("mongodb://127.0.0.1:27017/inn-app")
-  .then(() => {
-    console.log("Connected to the database");
-  })
-  .catch(() => {
-    console.log("Something went wrong when conecting to the database");
-  });
-
+const ProfessionValues = [
+  "Blacksmith",
+  "Alchemist",
+  "General Merchant",
+  "Butcher",
+  "Druid",
+  "Smuggler",
+] as const;
 interface MerchantDocumentInterface extends Document {
   name: string;
   profession: Profession;
@@ -30,32 +30,32 @@ const MerchantSchema = new Schema<MerchantDocumentInterface>({
   name: {
     type: String,
     required: true,
-    validate: (value: string) => {
-      if (!value.match(/^[A-Z]/)) {
-        throw new Error("Name must start with a capital letter");
-      }
+    validate: {
+      validator: (value: string) => /^[A-Z]/.test(value),
+      message: "Name must start with a capital letter",
     },
   },
   profession: {
     type: String,
     required: true,
-    enum: [
-      "Blacksmith",
-      "Alchemist",
-      "General Merchant",
-      "Butcher",
-      "Druid",
-      "Smuggler",
-    ],
+    enum: {
+      values: ProfessionValues,
+      message: "Profession is not valid",
+    },
   },
   location: {
     type: String,
     default: "Novigrado",
+    validate: {
+      validator: (value: string) => value.trim().length > 0,
+      message: "Location must not be empty",
+    },
   },
 });
 
-const Merchant = model<MerchantDocumentInterface>("Merchants", MerchantSchema);
+export const Merchant = model<MerchantDocumentInterface>("Merchants", MerchantSchema);
 
+/*
 const merchant = new Merchant({
   name: "Gremist",
   profession: "Druid",
@@ -70,3 +70,4 @@ merchant
   .catch((error) => {
     console.log(error);
   });
+*/
