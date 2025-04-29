@@ -172,6 +172,15 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
       message: 'Item price must be greater than 0',
     },
   },
+  quantity: {
+    type: Number,
+    required: true,
+    default: 1,
+    validate: {
+      validator: (value: number) => validator.isInt(value.toString(), { gt: 0 }),
+      message: 'Item quantity must be greater than 0',
+    },
+  },
 }, { discriminatorKey: 'kind', collection: 'items' });
 
 export const Item = model<ItemDocumentInterface>('Item', ItemSchema);
