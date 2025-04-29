@@ -5,23 +5,32 @@ export const itemRouter: express.Router = express.Router();
 
 itemRouter.post('/goods', async (req, res) => {
   try {
-    const { material } = req.body;
+    const { name, material, quantity = 1 } = req.body;
+    const existingItem = await Item.findOne({ name, material });
+
+    if (existingItem) {
+      existingItem.quantity += quantity;
+      await existingItem.save();
+      return res.status(200).send(existingItem);
+    }
 
     let item;
-    if (GenericMaterialValues.WeaponMaterial.includes(material)) {
+    if (material === GenericMaterialValues.WeaponMaterial) {
       item = new Weapon(req.body);
-    } else if (GenericMaterialValues.ArmorMaterial.includes(material)) {
+    } else if (material === GenericMaterialValues.ArmorMaterial) {
       item = new Armor(req.body);
-    } else if (GenericMaterialValues.PotionMaterial.includes(material)) {
+    } else if (material === GenericMaterialValues.PotionMaterial) {
       item = new Potion(req.body);
     } else {
-      return res.status(400).json({ error: 'Invalid material' });
+      item = new Item(req.body);
     }
 
     await item.save();
     return res.status(201).send(item);
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).send(
+      { message: 'An error occurred while creating the item', error }
+    );
   }
 });
 
@@ -37,7 +46,6 @@ itemRouter.get('/goods', async (req, res) => {
   }
 });
 
-// Weapons
 itemRouter.get('/goods/weapons', async (req, res) => {
   try {
     const weapons = await Weapon.find({});
@@ -50,7 +58,6 @@ itemRouter.get('/goods/weapons', async (req, res) => {
   }
 });
 
-// Armor
 itemRouter.get('/goods/armor', async (req, res) => {
   try {
     const armors = await Armor.find({});
@@ -63,7 +70,7 @@ itemRouter.get('/goods/armor', async (req, res) => {
   }
 });
 
-// Potions
+
 itemRouter.get('/goods/potions', async (req, res) => {
   try {
     const potions = await Potion.find({});

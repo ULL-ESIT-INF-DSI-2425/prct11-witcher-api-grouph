@@ -7,9 +7,16 @@ import { itemRouter } from './routers/itemRouter.js';
 //import { goodsRouter } from './routers/goods.js';
 //import { transactionRouter } from './routers/transaction.js';
 
+const port = 3000;
+
 export const app: express.Application = express();
 app.use(express.json());
 //app.use(clientRouter);
 app.use(itemRouter);
 //app.use(goodsRouter);
 //app.use(transactionRouter);
+
+app.listen(port, () => {
+  console.log(`Server is up on port ${port}`);
+  console.log(`http://localhost:${port}`);
+});
