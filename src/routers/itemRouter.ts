@@ -15,24 +15,23 @@ itemRouter.post('/goods', async (req, res) => {
     }
 
     let item;
-    if (material === GenericMaterialValues.WeaponMaterial) {
-      item = new Weapon(req.body);
-    } else if (material === GenericMaterialValues.ArmorMaterial) {
-      item = new Armor(req.body);
-    } else if (material === GenericMaterialValues.PotionMaterial) {
-      item = new Potion(req.body);
-    } else {
-      item = new Item(req.body);
-    }
-
-    await item.save();
-    return res.status(201).send(item);
-  } catch (error) {
-    return res.status(500).send(
-      { message: 'An error occurred while creating the item', error }
-    );
-  }
+     if (GenericMaterialValues.WeaponMaterial.includes(material)) {
+       item = new Weapon(req.body);
+     } else if (GenericMaterialValues.ArmorMaterial.includes(material)) {
+       item = new Armor(req.body);
+     } else if (GenericMaterialValues.PotionMaterial.includes(material)) {
+       item = new Potion(req.body);
+     } else {
+       return res.status(400).json({ error: 'Invalid material' });
+     }
+ 
+     await item.save();
+     return res.status(201).send(item);
+   } catch (error) {
+     return res.status(500).send(error);
+   }
 });
+
 
 itemRouter.get('/goods', async (req, res) => {
   try {
@@ -48,7 +47,8 @@ itemRouter.get('/goods', async (req, res) => {
 
 itemRouter.get('/goods/weapons', async (req, res) => {
   try {
-    const weapons = await Weapon.find({});
+    const query = req.query;
+    const weapons = await Weapon.find(query);
     if (weapons.length === 0) {
       return res.status(404).send({ error: "There are no weapons" });
     }
