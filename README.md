@@ -1,3 +1,27 @@
+# The Witcher: API REST with Node/Express and MongoDB
+## Description
+This API allows managing hunters, merchants, goods, and transactions in the *Witcher* universe. The main routes allow you to create, read, update, and delete information about hunters, merchants, goods, and transactions using the corresponding HTTP methods.
+
+## Routes and Functionality
+### Hunters
+Hunters can be witches, knights, nobles seeking relics, bandits needing daggers, mercenaries, or simple villagers looking for survival tools. Each has its own story and need for supplies.
+The `/hunters`route provides the ability to:
+
+
+### Merchants
+
+### Goods
+
+### Transactions
+
+
+## Requirements
+- Node.js
+- pnpm 
+
+## Installation
+
+
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/iigoPlD8)
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=19273657)
 
@@ -9,5 +33,5 @@
 
 ## TO DO:
 - Añadir logica de los items con la cantidad, al añadir un item si existe ya por nombre se sume a la cantidad y sino se crea el item
-- Refactorizar el codigo para la API REST, con async await.
-- Hacer las peticiones http de cada cosa.
+- Añadir modelo de transacciones
+- Añadir hunter, merchant y transaction routes
