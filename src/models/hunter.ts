@@ -47,11 +47,20 @@ const ClientSchema = new Schema<ClientDocumentInterface>({
     type: String,
     required: true,
     default: 'Human',
-    validate: {
-      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
-      message: 'Race must not be empty',
+    validate: [ 
+      { 
+        validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+        message: 'Race must not be empty',
+      },
+      {
+        validator: (value: string) => RaceValues.includes(value as Race),
+        message: 'Race is not valid',
+      },
+    ],
+    enum: {
+      values: RaceValues,
+      message: 'Race must be one of the following: ' + RaceValues.join(', '),
     },
-    enum: RaceValues,
   },
   location: {
     type: String,
