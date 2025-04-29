@@ -33,9 +33,6 @@ const MerchantSchema = new Schema<MerchantDocumentInterface>({
     validate: (value: string) => {
       if (!value.match(/^[A-Z]/)) {
         throw new Error("Name must start with a capital letter");
-        // } else if (!validator.default.isAlphanumeric(value)) {
-        //   throw new Error("Merchant title must contain alphanumeric characters only");
-        // }
       }
     },
   },

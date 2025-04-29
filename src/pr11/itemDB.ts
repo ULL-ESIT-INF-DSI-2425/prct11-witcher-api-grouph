@@ -14,6 +14,7 @@ interface ItemDocumentInterface extends Document {
   material: GenericMaterial
   weight: number;
   price: number;
+  quantity: number;
 }
 
 const ItemSchema = new Schema<ItemDocumentInterface>({
@@ -101,6 +102,7 @@ const Armor = Item.discriminator<ItemDocumentInterface>('Armor', ArmorSchema);
 interface PotionDocumentInterface extends ItemDocumentInterface {
   effect: string;
 }
+
 const PotionSchema = new Schema<PotionDocumentInterface>({
   material: {
     type: String,
