@@ -1,0 +1,8 @@
+{
+  "name": "Mithril Chainmail",
+  "description": "A lightweight yet strong armor made of mithril.",
+  "material": "Mithril",
+  "weight": 7,
+  "price": 500,
+  "quantity": 1
+}

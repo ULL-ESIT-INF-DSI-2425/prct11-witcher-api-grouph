@@ -1,0 +1,8 @@
+{
+  "name": "Volcanic Axe",
+  "description": "A heavy axe forged from volcanic glass.",
+  "material": "Volcanic Glass",
+  "weight": 5.5,
+  "price": 480,
+  "quantity": 1
+}

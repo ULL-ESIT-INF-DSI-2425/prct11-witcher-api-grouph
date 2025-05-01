@@ -1,0 +1,8 @@
+{
+  "name": "Elven Longsword",
+  "description": "An elegant sword forged with Elven Steel.",
+  "material": "Elven Steel",
+  "weight": 3.2,
+  "price": 420,
+  "quantity": 1
+}

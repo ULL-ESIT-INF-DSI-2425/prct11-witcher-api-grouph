@@ -1,0 +1,9 @@
+{
+  "name": "Griffin Elixir",
+  "description": "Boosts strength temporarily using griffin marrow.",
+  "material": "Griffin Marrow",
+  "weight": 0.6,
+  "price": 80,
+  "quantity": 3,
+  "effect": "Strength Boost"
+}

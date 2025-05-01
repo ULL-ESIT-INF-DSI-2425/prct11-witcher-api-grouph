@@ -1,0 +1,9 @@
+{
+  "name": "Ghost Veil",
+  "description": "Grants vision of invisible creatures.",
+  "material": "Wraith Essence",
+  "weight": 0.4,
+  "price": 90,
+  "quantity": 2,
+  "effect": "Invisible Creature Detection"
+}
