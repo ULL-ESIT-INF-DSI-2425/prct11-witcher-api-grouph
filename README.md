@@ -27,6 +27,13 @@ The `/goods` route provides the ability to:
 
 ## Examples
 Examples of **JSON files** for each route type can be found in the `/JSON-Examples` directory.
+```bash
+JSON-Examples/
+    ├── hunters
+    ├── items
+    ├── merchants
+    └── transactions
+```
 ## Installation
 
 
