@@ -1,16 +1,22 @@
 # The Witcher: API REST with Node/Express and MongoDB
 ## Description
-This API allows managing hunters, merchants, goods, and transactions in the *Witcher* universe. The main routes allow you to create, read, update, and delete information about hunters, merchants, goods, and transactions using the corresponding HTTP methods.
+This **API** allows managing hunters, merchants, goods, and transactions in the *Witcher* universe. The main routes allow you to create, read, update, and delete information about hunters, merchants, goods, and transactions using the corresponding HTTP methods.
 
 ## Routes and Functionality
 ### Hunters
-Hunters can be witches, knights, nobles seeking relics, bandits needing daggers, mercenaries, or simple villagers looking for survival tools. Each has its own story and need for supplies.
 The `/hunters`route provides the ability to:
 
 
 ### Merchants
 
-### Goods
+### Goods (items)
+The `/goods` route provides the ability to:
+- **Create a new good**
+- **Read all goods**
+- **Read a good by ID**
+- **Update a good by ID**
+- **Delete a good by ID**
+- **Search for goods by type**
 
 ### Transactions
 
@@ -19,6 +25,8 @@ The `/hunters`route provides the ability to:
 - Node.js
 - pnpm 
 
+## Examples
+Examples of **JSON files** for each route type can be found in the `/JSON-Examples` directory.
 ## Installation
 
 
