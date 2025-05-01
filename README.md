@@ -47,6 +47,9 @@ JSON-Examples/
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ULL-ESIT-INF-DSI-2425_prct11-witcher-api-grouph&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ULL-ESIT-INF-DSI-2425_prct11-witcher-api-grouph)
 
 ## TO DO:
-- Añadir logica de los items con la cantidad, al añadir un item si existe ya por nombre se sume a la cantidad y sino se crea el item
-- Añadir modelo de transacciones
-- Añadir hunter, merchant y transaction routes
+- Revisar el modelo de transacciones con owners
+- Añadir manejadores (son 7 recordar) de Merchant y Transaction 
+- Añadir tests para todo
+- Añadir documentación para todo
+- Añadir ejemplos de transaccion JSON 
+- Terminar el README
