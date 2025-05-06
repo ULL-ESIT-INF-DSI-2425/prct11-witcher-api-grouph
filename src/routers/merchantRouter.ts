@@ -1,13 +1,13 @@
 import express from "express";
 import { Merchant, Profession, ProfessionValues } from "../models/merchant.js";
 
+export const merchantRouter: express.Router = express.Router();
+
 interface MerchantFilter {
   profession?: Profession; 
   location?: string;
   name?: string;
 }
-
-export const merchantRouter: express.Router = express.Router();
 
 merchantRouter.post("/merchants", async (req, res) => {
   try {

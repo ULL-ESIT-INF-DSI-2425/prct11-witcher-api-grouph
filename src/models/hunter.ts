@@ -58,14 +58,12 @@ const HunterSchema = new Schema<HunterDocumentInterface>({
     required: true,
     default: 'John Doe',
     validate: {
-      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
-      message: 'Hunter name must not be empty',
+      validator: (value: string) => /^[A-Z]/.test(value),
+      message: "Name must start with a capital letter",
     },
-    unique: true,
   },
   race: {
     type: String,
-    required: true,
     default: 'Human',
     validate: [ 
       { 
@@ -84,7 +82,6 @@ const HunterSchema = new Schema<HunterDocumentInterface>({
   },
   location: {
     type: String,
-    required: true,
     default: 'Kaer Morhen',
     validate: {
       validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),

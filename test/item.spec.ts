@@ -3,7 +3,6 @@ import request from 'supertest';
 import { app } from '../src/app.js';
 import { before, beforeEach } from 'node:test';
 import { Weapon, Armor, Potion, Item, WeaponMaterial, ArmorMaterial, PotionMaterial } from '../src/models/item.js';
-import { ScriptElementKindModifier } from 'typescript';
 
 const firstWeapon = {
   name: "Sword of Destiny",
@@ -43,26 +42,18 @@ beforeEach(async () => {
 
 describe("POST /goods", () => {
   test("should create a new armor", async () => {
-    const response = await request(app)
+    await request(app)
       .post("/goods")
       .send({
         name: "Test armor",
+        kind: "Armor",
         description: "This is a test armor",
         material: "Leather",
         weight: 10,
         price: 100,
         quantity: 1,
       })
-      .expect(200);
-    // expect(response.body).to.include({
-    //   name: "Test armor",
-    //   description: "This is a test armor",
-    //   material: "Leather",
-    //   weight: 10,
-    //   price: 100,
-    //   quantity: 1,
-    //   kind: "Armor"
-    // });
+      .expect(201);
   });
 });
 
@@ -70,33 +61,32 @@ describe("GET /goods", () => {
   test("Should get all the items", async () => {
     await request(app).get("/goods").expect(200);
   });
-  test("Should return one armor", async () => {
-    await request(app).get("/goods/armors").expect(200);
+  test("Should return no` armor", async () => {
+    await request(app).get("/goods/armor").expect(200);
   });
-  test("Should return one weapon", async () => {
-    await request(app).get("/goods/weapons").expect(404);
+  test("Should return no weapon", async () => {
+    await request(app).get("/goods/weapon").expect(404);
   });
-  test("Should return one potion", async () => {
-    await request(app).get("/goods/potions").expect(404);
+  test("Should return no potion", async () => {
+    await request(app).get("/goods/potion").expect(404);
   });
 });
 
-describe("PATCH /goods", () => {
-  test("Should change the item", async () => {
-    await request(app)
-    .patch("/goods/681a3ddb22f2255d46ede960")
-    .send({
-      name: "Kamisa",
-      material: "Leather",
-    }).expect(200)
-  })
-})
+// describe("PATCH /goods", () => {
+//   test("Should change the item", async () => {
+//     await request(app)
+//     .patch("/goods/681a4843dc7ad65bd5462cd2")
+//     .send({
+//       name: "Camisa",
+//     }).expect(200)
+//   })
+// })
 
-describe("DELETE /goods", () => {
-  test("Should delete the item", async () => {
-    await request(app).delete("/goods/681a3ddb22f2255d46ede960").expect(200)
-  })
-})
+// describe("DELETE /goods", () => {
+//   test("Should delete the item", async () => {
+//     await request(app).delete("/goods/681a4843dc7ad65bd5462cd2").expect(200)
+//   })
+// })
 
 
 

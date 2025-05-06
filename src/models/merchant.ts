@@ -32,26 +32,6 @@ export const ProfessionValues = [
   "Druid",
   "Smuggler",
 ] as const;
-
-/**
- * Interface that defines the shape of a merchant document stored in MongoDB.
- * 
- * @interface
- * @extends Document
- * 
- * @property name - The name of the merchant. Must start with a capital letter.
- * @property profession - The merchant's profession, restricted to defined `Profession` values.
- * @property location - The physical or fictional location where the merchant operates. Defaults to "Novigrado".
- * 
- * @example
- * ```ts
- * const merchant: MerchantDocumentInterface = {
- *   name: "Gremist",
- *   profession: "Druid",
- *   location: "Skellige"
- * };
- * ```
- */
 interface MerchantDocumentInterface extends Document {
   name: string;
   profession: Profession;
