@@ -16,7 +16,7 @@ import { Hunter } from '../src/models/hunter.js'
           name: "Finn",
           race: "Human",
           location: "Ooo"
-        }).expect(400); // 400
+        }).expect(201);
     });
   });
   

@@ -179,7 +179,6 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
       validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
       message: 'Item kind must not be empty',
     },
-    unique: true,
   },
   description: {
     type: String,

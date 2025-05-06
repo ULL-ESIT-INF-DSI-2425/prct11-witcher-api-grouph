@@ -1,0 +1,10 @@
+{
+  "type": "Return",
+  "item": "64a1b2c3d4e5f6a7b8c9d003",
+  "quantity": 3,
+  "performedBy": {
+    "type": "Merchant",
+    "id": "64a1b2c3d4e5f6a7b8c9d011"
+  },
+  "date": "2024-03-03T11:15:00Z"
+}

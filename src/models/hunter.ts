@@ -1,5 +1,5 @@
-import { Document, model, Schema } from 'mongoose';
-import validator from 'validator';
+import { Document, model, Schema } from "mongoose";
+import validator from "validator";
 
 /**
  * Union type representing all valid hunter races.
@@ -16,10 +16,10 @@ export type Race =
   | "Spectral Cat"
   | "Half-Elf";
 
-  /**
-   * Array of all acceptable race values, used for validation and enum constraint.
-   * @type {const}
-   */
+/**
+ * Array of all acceptable race values, used for validation and enum constraint.
+ * @type {const}
+ */
 export const RaceValues = [
   "Human",
   "Elf",
@@ -43,9 +43,9 @@ export const RaceValues = [
  * @property {string} location - The location of the hunter.
  */
 interface HunterDocumentInterface extends Document {
-  name: string,
-  race: Race,
-  location: string
+  name: string;
+  race: Race;
+  location: string;
 }
 
 /**
@@ -55,8 +55,9 @@ interface HunterDocumentInterface extends Document {
 const HunterSchema = new Schema<HunterDocumentInterface>({
   name: {
     type: String,
+    unique: true,
     required: true,
-    default: 'John Doe',
+    default: "John Doe",
     validate: {
       validator: (value: string) => /^[A-Z]/.test(value),
       message: "Name must start with a capital letter",
@@ -64,30 +65,32 @@ const HunterSchema = new Schema<HunterDocumentInterface>({
   },
   race: {
     type: String,
-    default: 'Human',
-    validate: [ 
-      { 
-        validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
-        message: 'Race must not be empty',
+    default: "Human",
+    validate: [
+      {
+        validator: (value: string) =>
+          !validator.isEmpty(value, { ignore_whitespace: true }),
+        message: "Race must not be empty",
       },
       {
         validator: (value: string) => RaceValues.includes(value as Race),
-        message: 'Race is not valid',
+        message: "Race is not valid",
       },
     ],
     enum: {
       values: RaceValues,
-      message: 'Race must be one of the following: ' + RaceValues.join(', '),
+      message: "Race must be one of the following: " + RaceValues.join(", "),
     },
   },
   location: {
     type: String,
-    default: 'Kaer Morhen',
+    default: "Kaer Morhen",
     validate: {
-      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
-      message: 'Location must not be empty',
+      validator: (value: string) =>
+        !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: "Location must not be empty",
     },
-  }
+  },
 });
 
 /**
@@ -96,4 +99,4 @@ const HunterSchema = new Schema<HunterDocumentInterface>({
  * @type {model<HunterDocumentInterface>}
  * @remarks Collection name: 'Hunter'.
  */
-export const Hunter = model<HunterDocumentInterface>('Hunter', HunterSchema);
+export const Hunter = model<HunterDocumentInterface>("Hunter", HunterSchema);

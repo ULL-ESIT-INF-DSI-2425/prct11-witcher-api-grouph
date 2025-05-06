@@ -1,0 +1,10 @@
+{
+  "type": "Sale",
+  "item": "64a1b2c3d4e5f6a7b8c9d002",
+  "quantity": 1,
+  "performedBy": {
+    "type": "Hunter",
+    "id": "64a1b2c3d4e5f6a7b8c9d020"
+  },
+  "date": "2024-03-02T14:30:00Z"
+}

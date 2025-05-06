@@ -1,0 +1,10 @@
+{
+  "type": "Return",
+  "item": "64a1b2c3d4e5f6a7b8c9d001",
+  "quantity": 1,
+  "performedBy": {
+    "type": "Hunter",
+    "id": "64a1b2c3d4e5f6a7b8c9d022"
+  },
+  "date": "2024-03-05T10:00:00Z"
+}

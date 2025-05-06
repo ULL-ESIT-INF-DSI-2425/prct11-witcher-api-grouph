@@ -4,13 +4,20 @@ import { Merchant, Profession, ProfessionValues } from "../models/merchant.js";
 export const merchantRouter: express.Router = express.Router();
 
 interface MerchantFilter {
-  profession?: Profession; 
+  profession?: Profession;
   location?: string;
   name?: string;
 }
 
 merchantRouter.post("/merchants", async (req, res) => {
   try {
+    const { name } = req.body;
+    const existingMerchant = await Merchant.findOne({ name });
+    if (existingMerchant) {
+      return res.status(409).json({
+        error: "Merchant with this name already exists",
+      });
+    }
     const merchant = new Merchant(req.body);
     await merchant.save();
     return res.status(201).send(merchant);
