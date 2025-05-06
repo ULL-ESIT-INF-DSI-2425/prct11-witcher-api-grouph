@@ -97,7 +97,7 @@ itemRouter.get('/goods/:id', async (req, res) => {
 
 itemRouter.patch('/goods/:id', async (req, res) => {
   try {
-    const allowedUpdates = ['name', 'description', 'material', 'weight', 'price'];
+    const allowedUpdates = ['name', 'description', 'material', 'weight', 'price', 'quantity'];
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
     if (!isValidOperation) {
