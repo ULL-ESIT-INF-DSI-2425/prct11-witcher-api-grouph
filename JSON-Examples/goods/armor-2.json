@@ -1,5 +1,6 @@
 {
   "name": "Insectoid Carapace",
+  "kind": "Armor",
   "description": "Armor crafted from hardened insectoid chitin.",
   "material": "Insectoid Chitin",
   "weight": 6,

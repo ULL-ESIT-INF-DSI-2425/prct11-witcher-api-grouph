@@ -1,5 +1,6 @@
 {
   "name": "Ghost Veil",
+  "kind": "Potion",
   "description": "Grants vision of invisible creatures.",
   "material": "Wraith Essence",
   "weight": 0.4,

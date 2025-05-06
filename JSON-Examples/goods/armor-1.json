@@ -1,5 +1,6 @@
 {
   "name": "Mithril Chainmail",
+  "kind": "Armor",
   "description": "A lightweight yet strong armor made of mithril.",
   "material": "Mithril",
   "weight": 7,

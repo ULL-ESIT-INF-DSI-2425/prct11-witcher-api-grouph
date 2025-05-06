@@ -1,5 +1,6 @@
 {
   "name": "Griffin Elixir",
+  "kind": "Potion",
   "description": "Boosts strength temporarily using griffin marrow.",
   "material": "Griffin Marrow",
   "weight": 0.6,

@@ -1,7 +1,18 @@
 import express from "express";
-import { Transaction } from "../models/transaction.js";
-
+import { Types } from "mongoose";
+import {
+  Transaction,
+  TransactionType,
+  transactionTypeValues,
+} from "../models/transaction.js";
 export const transactionRouter: express.Router = express.Router();
+
+interface TransactionFilter {
+  type?: TransactionType;
+  item?: Types.ObjectId | string;
+  "performedBy.type"?: "Merchant" | "Hunter";
+  "performedBy.id"?: Types.ObjectId | string;
+}
 
 transactionRouter.post("/transactions", async (req, res) => {
   try {
@@ -10,72 +21,106 @@ transactionRouter.post("/transactions", async (req, res) => {
     return res.status(201).send(transaction);
   } catch {
     return res.status(400).send({
-      error: "Failed to create transaction.",
+      error: "Failed to create transaction",
     });
   }
 });
 
-transactionRouter.get('/transactions', async (req, res) => {
-  try {
-    const transaction = await Transaction.find({});
-    if (!transaction.length) {
-      return res.status(404).send({ error: "There are no transactions" });
-    }
-    return res.status(200).send(transaction);
-  } catch {
-    return res.status(500).send({
-      error: 'Failed to fetch transactions',
-    });
-  }
-});
-
-transactionRouter.get('/transactions/:id', async (req, res) => {
+transactionRouter.get("/transactions/:id", async (req, res) => {
   try {
     const transaction = await Transaction.findById(req.params.id);
     if (!transaction) {
-      return res.status(404).send({ error: "transaction not found" });
+      return res.status(404).send({ error: "Transaction not found" });
     }
     return res.status(200).send(transaction);
   } catch {
     return res.status(500).send({
-      error: 'Failed to fetch transaction',
+      error: "Failed to fetch transaction",
     });
   }
 });
 
-transactionRouter.patch('/transactions/:id', async (req, res) => {
+transactionRouter.get("/transactions", async (req, res) => {
+  try {
+    const { type, item, performedByType, performedById } = req.query;
+    const filter: TransactionFilter = {};
+    if (type) {
+      if (!transactionTypeValues.includes(type as TransactionType)) {
+        return res.status(400).send({ error: "Invalid transaction type" });
+      }
+      filter.type = type as TransactionType;
+    }
+    if (item) filter.item = item.toString();
+    if (performedByType) {
+      if (!["Merchant", "Hunter"].includes(performedByType.toString())) {
+        return res.status(400).send({ error: "Invalid performer type" });
+      }
+      filter["performedBy.type"] = performedByType as "Merchant" | "Hunter";
+    }
+    if (performedById) filter["performedBy.id"] = performedById.toString();
+    const transactions = await Transaction.find(filter)
+      .populate({
+        path: "item",
+        select: "name",
+      })
+      .populate({
+        path: "performedBy.id",
+        select: "name",
+        options: { strictPopulate: false },
+      });
+    if (!transactions.length) {
+      const errorMessage = Object.keys(filter).length
+        ? "No transactions match the criteria"
+        : "No transactions found";
+      return res.status(404).send({ error: errorMessage });
+    }
+    return res.status(200).send(transactions);
+  } catch {
+    return res.status(500).send({
+      error: "Failed to fetch transactions",
+    });
+  }
+});
+
+transactionRouter.patch("/transactions/:id", async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ['name', 'race', 'location'];
-  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  const allowedUpdates = ["type", "item", "quantity", "performedBy", "date"];
+  const isValidOperation = updates.every((update) =>
+    allowedUpdates.includes(update),
+  );
+
   if (!isValidOperation) {
-    return res.status(400).send({ error: 'Invalid updates!' });
+    return res.status(400).send({ error: "Invalid updates!" });
   }
+
   try {
-    const hunter = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!hunter) {
-      return res.status(404).send({ error: "Hunter not found" });
+    const transaction = await Transaction.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true },
+    );
+
+    if (!transaction) {
+      return res.status(404).send({ error: "Transaction not found" });
     }
-    return res.status(200).send(hunter);
+    return res.status(200).send(transaction);
   } catch {
     return res.status(500).send({
-      error: 'Failed to update hunter',
+      error: "Failed to update transaction",
     });
   }
 });
 
-transactionRouter.delete('/transaction/:id', async (req, res) => {
+transactionRouter.delete("/transactions/:id", async (req, res) => {
   try {
-    const hunter = await Transaction.findByIdAndDelete(req.params.id);
-    if (!hunter) {
-      return res.status(404).send({ error: "Hunter not found" });
+    const transaction = await Transaction.findByIdAndDelete(req.params.id);
+    if (!transaction) {
+      return res.status(404).send({ error: "Transaction not found" });
     }
-    return res.status(200).send(hunter);
+    return res.status(200).send(transaction);
   } catch {
     return res.status(500).send({
-      error: 'Failed to delete hunter',
+      error: "Failed to delete transaction",
     });
   }
 });

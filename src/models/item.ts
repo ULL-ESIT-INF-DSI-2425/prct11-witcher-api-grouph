@@ -150,6 +150,7 @@ export const EffectValues = {
  */
 interface ItemDocumentInterface extends Document {
   name: string;
+  kind: string;
   description: string;
   material: GenericMaterial
   weight: number;
@@ -168,6 +169,15 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
     validate: {
       validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
       message: 'Item name must not be empty',
+    },
+    unique: true,
+  },
+  kind: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (value: string) => !validator.isEmpty(value, { ignore_whitespace: true }),
+      message: 'Item kind must not be empty',
     },
     unique: true,
   },
@@ -213,7 +223,7 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
       message: 'Item quantity must be greater than 0',
     },
   },
-}, { discriminatorKey: 'kind', collection: 'items' });
+}, { discriminatorKey: 'kind', collection: 'item' });
 
 /**
  * Base model for all items.

@@ -1,5 +1,6 @@
 {
   "name": "Elven Longsword",
+  "kind": "Weapon",
   "description": "An elegant sword forged with Elven Steel.",
   "material": "Elven Steel",
   "weight": 3.2,

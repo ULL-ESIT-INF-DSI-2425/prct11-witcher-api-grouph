@@ -107,4 +107,4 @@ const MerchantSchema = new Schema<MerchantDocumentInterface>({
  * merchant.save().then(result => console.log(result));
  * ```
  */
-export const Merchant = model<MerchantDocumentInterface>("Merchants", MerchantSchema);
+export const Merchant = model<MerchantDocumentInterface>("Merchant", MerchantSchema);

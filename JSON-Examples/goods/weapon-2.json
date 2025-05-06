@@ -1,5 +1,6 @@
 {
   "name": "Volcanic Axe",
+  "kind": "Weapon",
   "description": "A heavy axe forged from volcanic glass.",
   "material": "Volcanic Glass",
   "weight": 5.5,

@@ -97,6 +97,6 @@ const HunterSchema = new Schema<HunterDocumentInterface>({
  * Mongoose model for the Hunter schema.
  * This model provides an interface to interact with the Hunter collection in MongoDB.
  * @type {model<HunterDocumentInterface>}
- * @remarks Collection name: 'Hunters'.
+ * @remarks Collection name: 'Hunter'.
  */
-export const Hunter = model<HunterDocumentInterface>('Hunters', HunterSchema);
+export const Hunter = model<HunterDocumentInterface>('Hunter', HunterSchema);

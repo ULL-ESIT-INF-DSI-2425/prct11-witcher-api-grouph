@@ -1,22 +1,22 @@
-import { Document, model, Schema, Types } from 'mongoose';
-import validator from 'validator';
+import { Document, model, Schema, Types } from "mongoose";
+import validator from "validator";
 
 /**
  * Enum-like type representing the possible transaction types.
  *
  * @example
  * ```ts
- * const t: transactionType = "Sale";
+ * const t: TransactionType = "Sale";
  * ```
  */
-export type transactionType = "Purchase" | "Sale" | "Return";
+export type TransactionType = "Purchase" | "Sale" | "Return";
 
 /**
  * Constant array with all valid transaction type values.
  *
- * @see transactionType
+ * @see TransactionType
  */
-export const transactionTypeValues = [ "Purchase", "Sale", "Return" ] as const;
+export const transactionTypeValues = ["Purchase", "Sale", "Return"] as const;
 
 /**
  * Interface for a transaction document in MongoDB.
@@ -45,11 +45,11 @@ export const transactionTypeValues = [ "Purchase", "Sale", "Return" ] as const;
  * ```
  */
 export interface TransactionDocumentInterface extends Document {
-  type: transactionType;
+  type: TransactionType;
   item: Types.ObjectId;
   quantity: number;
   performedBy: {
-    type: "Merchant" | "Client";
+    type: "Merchant" | "Hunter";
     id: Types.ObjectId;
   };
   date: Date;
@@ -75,7 +75,7 @@ const TransactionSchema = new Schema<TransactionDocumentInterface>({
   item: {
     type: Schema.ObjectId,
     required: true,
-    ref: "Items",
+    ref: "Item",
   },
   quantity: {
     type: Number,
@@ -90,14 +90,14 @@ const TransactionSchema = new Schema<TransactionDocumentInterface>({
       type: String,
       required: true,
       enum: {
-        values: [ "Merchant", "Client" ],
+        values: ["Merchant", "Hunter"],
         message: "Performed by type is not valid",
       },
     },
     id: {
-      type: Schema.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
-      refPath: "performedBy.type", // Dynamic reference
+      refPath: "performedBy.type",
     },
   },
   date: {
@@ -113,7 +113,7 @@ const TransactionSchema = new Schema<TransactionDocumentInterface>({
 
 /**
  * Mongoose model for transaction documents.
- * Allows interaction with the `Transactions` collection.
+ * Allows interaction with the `Transaction` collection.
  *
  * @example
  * ```ts
@@ -126,8 +126,11 @@ const TransactionSchema = new Schema<TransactionDocumentInterface>({
  *     id: someClientId
  *   }
  * });
- * 
+ *
  * await transaction.save();
  * ```
  */
-export const Transaction = model<TransactionDocumentInterface>("Transactions", TransactionSchema);
+export const Transaction = model<TransactionDocumentInterface>(
+  "Transaction",
+  TransactionSchema,
+);

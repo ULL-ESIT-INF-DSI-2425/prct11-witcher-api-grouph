@@ -83,3 +83,5 @@ The API is accessible at the following URL: [https://prct11-witcher-api-grouph.o
 - Terminar el README
 - Desplegar la API en Render y MongoDB Atlas
 - Agregar query string parameters a todos los GET
+- Añadir en el catch el error
+- Ver si { discriminatorKey: 'kind', collection: 'items' }) al quitarle la 's' se arregla. "Crear nuevos items pa probar si el kind funciona ya q los q estan tenian "items" como key

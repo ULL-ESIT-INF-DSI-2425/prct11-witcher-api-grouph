@@ -1,19 +1,16 @@
-import express from 'express';
-import { Weapon, Armor, Potion, Item, GenericMaterialValues, GenericMaterial } from '../models/item.js';
+import express from "express";
+import {
+  Weapon,
+  Armor,
+  Potion,
+  Item,
+} from "../models/item.js";
 
 export const itemRouter: express.Router = express.Router();
 
-interface ItemFilter {
-  name?: string;
-  description?: string;
-  material?: GenericMaterial;
-  weight?: number;
-  price?: number;
-}
-
-itemRouter.post('/goods', async (req, res) => {
+itemRouter.post("/goods", async (req, res) => {
   try {
-    const { name, material, quantity = 1 } = req.body;
+    const { name, kind, material, quantity = 1 } = req.body;
     const existingItem = await Item.findOne({ name, material });
 
     if (existingItem) {
@@ -22,26 +19,29 @@ itemRouter.post('/goods', async (req, res) => {
       return res.status(200).send(existingItem);
     }
 
+    if (!kind) {
+      return res.status(400).json({ error: "Kind is required" });
+    }
+
     let item;
-     if (GenericMaterialValues.WeaponMaterial.includes(material)) {
-       item = new Weapon(req.body);
-     } else if (GenericMaterialValues.ArmorMaterial.includes(material)) {
-       item = new Armor(req.body);
-     } else if (GenericMaterialValues.PotionMaterial.includes(material)) {
-       item = new Potion(req.body);
-     } else {
-       return res.status(400).json({ error: 'Invalid material' });
-     }
- 
-     await item.save();
-     return res.status(201).send(item);
-   } catch (error) {
-     return res.status(500).send(error);
-   }
+    if (kind === "Weapon") {
+      item = new Weapon(req.body);
+    } else if (kind === "Armor") {
+      item = new Armor(req.body);
+    } else if (kind === "Potion") {
+      item = new Potion(req.body);
+    } else {
+      return res.status(400).json({ error: "Invalid kind" });
+    }
+
+    await item.save();
+    return res.status(201).send(item);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
-
-itemRouter.get('/goods', async (req, res) => {
+itemRouter.get("/goods", async (req, res) => {
   try {
     const items = await Item.find({});
     if (!items.length) {
@@ -53,7 +53,7 @@ itemRouter.get('/goods', async (req, res) => {
   }
 });
 
-itemRouter.get('/goods/weapons', async (req, res) => {
+itemRouter.get("/goods/weapon", async (req, res) => {
   try {
     const query = req.query;
     const weapons = await Weapon.find(query);
@@ -66,7 +66,7 @@ itemRouter.get('/goods/weapons', async (req, res) => {
   }
 });
 
-itemRouter.get('/goods/armor', async (req, res) => {
+itemRouter.get("/goods/armor", async (req, res) => {
   try {
     const armors = await Armor.find({});
     if (armors.length === 0) {
@@ -78,8 +78,7 @@ itemRouter.get('/goods/armor', async (req, res) => {
   }
 });
 
-
-itemRouter.get('/goods/potions', async (req, res) => {
+itemRouter.get("/goods/potion", async (req, res) => {
   try {
     const potions = await Potion.find({});
     if (potions.length === 0) {
@@ -91,7 +90,7 @@ itemRouter.get('/goods/potions', async (req, res) => {
   }
 });
 
-itemRouter.get('/goods/:id', async (req, res) => {
+itemRouter.get("/goods/:id", async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
     if (!item) {
@@ -103,16 +102,26 @@ itemRouter.get('/goods/:id', async (req, res) => {
   }
 });
 
-itemRouter.patch('/goods/:id', async (req, res) => {
+itemRouter.patch("/goods/:id", async (req, res) => {
   try {
-    const allowedUpdates = ['name', 'description', 'material', 'weight', 'price', 'quantity'];
+    const allowedUpdates = [
+      "name",
+      "description",
+      "material",
+      "weight",
+      "price",
+      "quantity",
+    ];
     const updates = Object.keys(req.body);
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+    const isValidOperation = updates.every((update) =>
+      allowedUpdates.includes(update),
+    );
     if (!isValidOperation) {
-      return res.status(400).send({ error: 'Invalid updates!' });
+      return res.status(400).send({ error: "Invalid updates!" });
     }
-    const item = await Item.findByIdAndUpdate(req.params.id, req.body, { 
-      new: true, runValidators: true 
+    const item = await Item.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
     });
     if (!item) {
       return res.status(404).send({ error: "Item not found" });
@@ -123,8 +132,7 @@ itemRouter.patch('/goods/:id', async (req, res) => {
   }
 });
 
-
-itemRouter.delete('/goods/:id', async (req, res) => {
+itemRouter.delete("/goods/:id", async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
     if (!item) {
@@ -133,12 +141,12 @@ itemRouter.delete('/goods/:id', async (req, res) => {
     if (item.quantity > 1) {
       item.quantity -= 1;
       await item.save();
-      return res.status(200).send({message: "Item quantity decreased", item});
+      return res.status(200).send({ message: "Item quantity decreased", item });
     } else {
       await item.deleteOne();
       return res.status(200).send({ message: "Item deleted", item });
     }
-  } catch (error) {
+  } catch {
     return res.status(500).send({ error: "Error deleting item" });
   }
 });
