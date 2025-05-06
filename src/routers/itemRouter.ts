@@ -58,7 +58,7 @@ itemRouter.get('/goods/weapons', async (req, res) => {
   }
 });
 
-itemRouter.get('/goods/armor', async (req, res) => {
+itemRouter.get('/goods/armors', async (req, res) => {
   try {
     const armors = await Armor.find({});
     if (armors.length === 0) {
