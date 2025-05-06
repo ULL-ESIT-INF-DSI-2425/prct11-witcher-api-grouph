@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import request from 'supertest';
-import { app } from '../src/app';
+import { app } from '../src/app.js';
 import { before, beforeEach } from 'node:test';
 import { Weapon, Armor, Potion, Item, WeaponMaterial, ArmorMaterial, PotionMaterial } from '../src/models/item.js';
 import { ScriptElementKindModifier } from 'typescript';
@@ -13,7 +13,6 @@ const firstWeapon = {
   price: 100,
   quantity: 1,
 }
-
 const firstArmor = {
   name: "Dragon Scale Armor",
   description: "An armor made from the scales of a dragon.",
@@ -66,3 +65,35 @@ describe("POST /goods", () => {
     });
   });
 });
+
+// describe("GET /goods", () => {
+//   test("Should get all the items", async () => {
+//     await request(app).get("/goods").expect(201);
+//   });
+//   test("Should return one armor", async () => {
+//     await request(app).get("/goods/armors").expect(404);
+//   });
+//   test("Should return one weapon", async () => {
+//     await request(app).get("/goods/weapons").expect(404);
+//   });
+//   test("Should return one potion", async () => {
+//     await request(app).get("/goods/potions").expect(404);
+//   });
+// });
+
+// describe("PATCH /goods", () => {
+//   test("Should change the item", async () => {
+//     await request(app)
+//     .patch("/goods/1")
+//     .send({
+//       name: "Sword of Destiny",
+//       description: "A legendary sword forged in the fires of Mount Doom.",
+//       material: "Steel",
+//       weight: 50,
+//       price: 1000,
+//       quantity: 1,
+//     }). expect(200)
+//   })
+// })
+
+
