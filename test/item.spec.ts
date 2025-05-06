@@ -49,7 +49,7 @@ describe("POST /goods", () => {
       .send({
         name: "Test armor",
         description: "This is a test armor",
-        material: "Steel",
+        material: "Leather",
         weight: 10,
         price: 100,
         quantity: 1,
@@ -58,7 +58,7 @@ describe("POST /goods", () => {
     expect(response.body).to.include({
       name: "Test armor",
       description: "This is a test armor",
-      material: "Steel",
+      material: "Leather",
       weight: 10,
       price: 100,
       quantity: 1,
