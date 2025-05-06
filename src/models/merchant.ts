@@ -2,7 +2,13 @@ import { Document, model, Schema } from "mongoose";
 import validator from "validator";
 
 /**
- * type that represents the possible professions of a merchant
+ * Represents the possible professions that a merchant can have.
+ * These professions determine the type of items the merchant may sell or trade.
+ * 
+ * @example
+ * ```ts
+ * const prof: Profession = "Alchemist";
+ * ```
  */
 export type Profession =
   | "Blacksmith"
@@ -12,6 +18,12 @@ export type Profession =
   | "Druid"
   | "Smuggler";
 
+/**
+ * Constant array of all valid profession values.
+ * Useful for enum validation or UI dropdowns.
+ * 
+ * @see Profession
+ */
 export const ProfessionValues = [
   "Blacksmith",
   "Alchemist",
@@ -20,12 +32,39 @@ export const ProfessionValues = [
   "Druid",
   "Smuggler",
 ] as const;
+
+/**
+ * Interface that defines the shape of a merchant document stored in MongoDB.
+ * 
+ * @interface
+ * @extends Document
+ * 
+ * @property name - The name of the merchant. Must start with a capital letter.
+ * @property profession - The merchant's profession, restricted to defined `Profession` values.
+ * @property location - The physical or fictional location where the merchant operates. Defaults to "Novigrado".
+ * 
+ * @example
+ * ```ts
+ * const merchant: MerchantDocumentInterface = {
+ *   name: "Gremist",
+ *   profession: "Druid",
+ *   location: "Skellige"
+ * };
+ * ```
+ */
 interface MerchantDocumentInterface extends Document {
   name: string;
   profession: Profession;
   location: string;
 }
 
+/**
+ * Mongoose schema for merchants, enforcing validations and constraints on the data.
+ * 
+ * @see MerchantDocumentInterface
+ * @throws {ValidationError} If the name doesn't start with a capital letter or the location is empty.
+ * @default location "Novigrado"
+ */
 const MerchantSchema = new Schema<MerchantDocumentInterface>({
   name: {
     type: String,
@@ -53,21 +92,19 @@ const MerchantSchema = new Schema<MerchantDocumentInterface>({
   },
 });
 
+/**
+ * Mongoose model for merchant documents.
+ * Provides access to database operations like `.find()`, `.save()`, etc.
+ * 
+ * @example
+ * ```ts
+ * const merchant = new Merchant({
+ *   name: "Gremist",
+ *   profession: "Druid",
+ *   location: "Skellige"
+ * });
+ * 
+ * merchant.save().then(result => console.log(result));
+ * ```
+ */
 export const Merchant = model<MerchantDocumentInterface>("Merchants", MerchantSchema);
-
-/*
-const merchant = new Merchant({
-  name: "Gremist",
-  profession: "Druid",
-  location: "Skellige",
-});
-
-merchant
-  .save()
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-*/
