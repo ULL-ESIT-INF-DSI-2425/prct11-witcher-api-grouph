@@ -1,7 +1,15 @@
 import express from 'express';
-import { Weapon, Armor, Potion, Item, GenericMaterialValues } from '../models/item.js';
+import { Weapon, Armor, Potion, Item, GenericMaterialValues, GenericMaterial } from '../models/item.js';
 
 export const itemRouter: express.Router = express.Router();
+
+interface ItemFilter {
+  name?: string;
+  description?: string;
+  material?: GenericMaterial;
+  weight?: number;
+  price?: number;
+}
 
 itemRouter.post('/goods', async (req, res) => {
   try {
@@ -58,7 +66,7 @@ itemRouter.get('/goods/weapons', async (req, res) => {
   }
 });
 
-itemRouter.get('/goods/armors', async (req, res) => {
+itemRouter.get('/goods/armor', async (req, res) => {
   try {
     const armors = await Armor.find({});
     if (armors.length === 0) {
