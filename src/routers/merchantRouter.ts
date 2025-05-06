@@ -2,14 +2,14 @@ import express from "express";
 import { Merchant, Profession, ProfessionValues } from "../models/merchant.js";
 
 interface MerchantFilter {
-  profession?: Profession; // Reuse your existing Profession type
+  profession?: Profession; 
   location?: string;
   name?: string;
 }
 
 export const merchantRouter: express.Router = express.Router();
 
-merchantRouter.post("/merchant", async (req, res) => {
+merchantRouter.post("/merchants", async (req, res) => {
   try {
     const merchant = new Merchant(req.body);
     await merchant.save();
@@ -21,7 +21,7 @@ merchantRouter.post("/merchant", async (req, res) => {
   }
 });
 
-merchantRouter.get("/merchant", async (req, res) => {
+merchantRouter.get("/merchants", async (req, res) => {
   try {
     const { profession, location, name } = req.query;
     const filter: MerchantFilter = {};
@@ -48,7 +48,7 @@ merchantRouter.get("/merchant", async (req, res) => {
   }
 });
 
-merchantRouter.get("/merchant/:id", async (req, res) => {
+merchantRouter.get("/merchants/:id", async (req, res) => {
   try {
     const merchant = await Merchant.findById(req.params.id);
     if (!merchant) {
@@ -62,7 +62,7 @@ merchantRouter.get("/merchant/:id", async (req, res) => {
   }
 });
 
-merchantRouter.patch("/merchant/:id", async (req, res) => {
+merchantRouter.patch("/merchants/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "profession", "location"];
   const isValidOperation = updates.every((update) =>
@@ -87,7 +87,7 @@ merchantRouter.patch("/merchant/:id", async (req, res) => {
   }
 });
 
-merchantRouter.delete("/merchant/:id", async (req, res) => {
+merchantRouter.delete("/merchants/:id", async (req, res) => {
   try {
     const merchant = await Merchant.findByIdAndDelete(req.params.id);
     if (!merchant) {

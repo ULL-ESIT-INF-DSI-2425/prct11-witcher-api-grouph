@@ -15,7 +15,7 @@ transactionRouter.post("/transactions", async (req, res) => {
   }
 });
 
-transactionRouter.get('/transaction', async (req, res) => {
+transactionRouter.get('/transactions', async (req, res) => {
   try {
     const transaction = await Transaction.find({});
     if (!transaction.length) {
@@ -29,7 +29,7 @@ transactionRouter.get('/transaction', async (req, res) => {
   }
 });
 
-transactionRouter.get('/transaction/:id', async (req, res) => {
+transactionRouter.get('/transactions/:id', async (req, res) => {
   try {
     const transaction = await Transaction.findById(req.params.id);
     if (!transaction) {
@@ -43,25 +43,7 @@ transactionRouter.get('/transaction/:id', async (req, res) => {
   }
 });
 
-transactionRouter.get('/transaction/race/:race', async (req, res) => {
-  try {
-    const transaction = await Transaction.find({ race: req.params.race });
-    res.status(transaction.length ? 200 : 404).send(transaction.length ? transaction : { error: 'No transaction of that race found' });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-transactionRouter.get('/transaction/location/:location', async (req, res) => {
-  try {
-    const transaction = await Transaction.find({ location: req.params.location });
-    res.status(transaction.length ? 200 : 404).send(transaction.length ? transaction : { error: 'No transaction in that location' });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-transactionRouter.patch('/transaction/:id', async (req, res) => {
+transactionRouter.patch('/transactions/:id', async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['name', 'race', 'location'];
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
