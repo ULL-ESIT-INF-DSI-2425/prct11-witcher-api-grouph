@@ -1,7 +1,7 @@
 {
-  "name": "pr7-witcher-datamodel",
+  "name": "pr11-witcher-api-grouph",
   "version": "1.0.0",
-  "description": "PR7-DSI",
+  "description": "PR11-DSI",
   "main": "index.js",
   "scripts": {
     "doc": "typedoc",
