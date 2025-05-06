@@ -14,7 +14,7 @@ hunterRouter.post('/hunters', async (req, res) => {
     const hunter = new Hunter(req.body);
     await hunter.save();
     return res.status(201).send(hunter);
-  } catch (error) {
+  } catch {
     return res.status(400).send({
       error: 'Failed to create hunter',
     });
@@ -55,7 +55,7 @@ hunterRouter.get('/hunters/:id', async (req, res) => {
       return res.status(404).send({ error: "Hunter not found" });
     }
     return res.status(200).send(hunter);
-  } catch (error) {
+  } catch {
     return res.status(500).send({
       error: 'Failed to fetch hunter',
     });
@@ -78,7 +78,7 @@ hunterRouter.patch('/hunters/:id', async (req, res) => {
       return res.status(404).send({ error: "Hunter not found" });
     }
     return res.status(200).send(hunter);
-  } catch (error) {
+  } catch {
     return res.status(500).send({
       error: 'Failed to update hunter',
     });
@@ -95,7 +95,7 @@ hunterRouter.put('/hunters/:id', async (req, res) => {
       return res.status(404).send({ error: "Hunter not found" });
     }
     return res.status(200).send(hunter);
-  } catch (error) {
+  } catch {
     return res.status(500).send({
       error: 'Failed to update hunter',
     });
@@ -109,7 +109,7 @@ hunterRouter.delete('/hunters/:id', async (req, res) => {
       return res.status(404).send({ error: "Hunter not found" });
     }
     return res.status(200).send(hunter);
-  } catch (error) {
+  } catch {
     return res.status(500).send({
       error: 'Failed to delete hunter',
     });
@@ -124,7 +124,7 @@ hunterRouter.delete('/hunters', async (req, res) => {
     }
     return res.status(200).send({ message: "All hunters deleted" });
   }
-  catch (error) {
+  catch {
     return res.status(500).send({
       error: 'Failed to delete hunters',
     });

@@ -1,4 +1,4 @@
-import { Document, connect, model, Schema, Types } from 'mongoose';
+import { Document, model, Schema, Types } from 'mongoose';
 import validator from 'validator';
 
 type transactionType = "Purchase" | "Sale" | "Return";

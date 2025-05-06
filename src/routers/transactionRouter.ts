@@ -77,7 +77,7 @@ transactionRouter.patch('/transaction/:id', async (req, res) => {
       return res.status(404).send({ error: "Hunter not found" });
     }
     return res.status(200).send(hunter);
-  } catch (error) {
+  } catch {
     return res.status(500).send({
       error: 'Failed to update hunter',
     });
@@ -91,7 +91,7 @@ transactionRouter.delete('/transaction/:id', async (req, res) => {
       return res.status(404).send({ error: "Hunter not found" });
     }
     return res.status(200).send(hunter);
-  } catch (error) {
+  } catch {
     return res.status(500).send({
       error: 'Failed to delete hunter',
     });

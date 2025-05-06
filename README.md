@@ -83,3 +83,4 @@ The API is accessible at the following URL: [https://prct11-witcher-api-grouph.o
 - Añadir ejemplos de transaccion JSON 
 - Terminar el README
 - Desplegar la API en Render y MongoDB Atlas
+- Agregar query string parameters a todos los GET
