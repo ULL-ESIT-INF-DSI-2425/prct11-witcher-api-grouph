@@ -12,7 +12,7 @@ export type Profession =
   | "Druid"
   | "Smuggler";
 
-const ProfessionValues = [
+export const ProfessionValues = [
   "Blacksmith",
   "Alchemist",
   "General Merchant",
