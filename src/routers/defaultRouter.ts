@@ -1,7 +1,7 @@
-import express from 'express';
+import express from "express";
 
-export const defaultRouter: express.Router = express.Router();
+export const defaultRouter = express.Router();
 
-defaultRouter.all('*', (_, res) => {
+defaultRouter.all("/{*splat}", (_, res) => {
   res.status(501).send();
 });

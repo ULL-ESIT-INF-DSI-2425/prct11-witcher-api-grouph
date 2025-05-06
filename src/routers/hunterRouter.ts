@@ -1,11 +1,17 @@
 import express from 'express';
-import { Client } from '../models/hunter.js';
+import { Hunter, RaceValues, Race } from '../models/hunter.js';
 
 export const hunterRouter: express.Router = express.Router();
 
+interface HunterFilter {
+  race?: Race; 
+  location?: string;
+  name?: string;
+}
+
 hunterRouter.post('/hunters', async (req, res) => {
   try {
-    const hunter = new Client(req.body);
+    const hunter = new Hunter(req.body);
     await hunter.save();
     return res.status(201).send(hunter);
   } catch (error) {
@@ -15,23 +21,36 @@ hunterRouter.post('/hunters', async (req, res) => {
   }
 });
 
-hunterRouter.get('/hunters', async (req, res) => {
+hunterRouter.get("/hunters", async (req, res) => {
   try {
-    const hunters = await Client.find({});
+    const { race, location, name } = req.query;
+    const filter: HunterFilter = {};
+    if (race) {
+      if (!RaceValues.includes(race as Race)) {
+        return res.status(400).send({ error: "Invalid profession" });
+      }
+      filter.race = race as Race;
+    }
+    if (location) filter.location = location as string;
+    if (name) filter.name = name as string;
+    const hunters = await Hunter.find(filter);
     if (!hunters.length) {
-      return res.status(404).send({ error: "There are no hunters" });
+      const errorMessage = Object.keys(filter).length
+        ? `No hunters found matching: ${Object.entries(filter)
+            .map(([key, val]) => `${key}=${val}`)
+            .join(", ")}`
+        : "There are no hunters";
+      return res.status(404).send({ error: errorMessage });
     }
     return res.status(200).send(hunters);
-  } catch (error) {
-    return res.status(500).send({
-      error: 'Failed to fetch hunters',
-    });
+  } catch {
+    return res.status(500).send({ error: "Failed to fetch hunters" });
   }
 });
 
 hunterRouter.get('/hunters/:id', async (req, res) => {
   try {
-    const hunter = await Client.findById(req.params.id);
+    const hunter = await Hunter.findById(req.params.id);
     if (!hunter) {
       return res.status(404).send({ error: "Hunter not found" });
     }
@@ -43,24 +62,6 @@ hunterRouter.get('/hunters/:id', async (req, res) => {
   }
 });
 
-hunterRouter.get('/hunters/race/:race', async (req, res) => {
-  try {
-    const hunters = await Client.find({ race: req.params.race });
-    res.status(hunters.length ? 200 : 404).send(hunters.length ? hunters : { error: 'No hunters of that race found' });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-hunterRouter.get('/hunters/location/:location', async (req, res) => {
-  try {
-    const hunters = await Client.find({ location: req.params.location });
-    res.status(hunters.length ? 200 : 404).send(hunters.length ? hunters : { error: 'No hunters in that location' });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
 hunterRouter.patch('/hunters/:id', async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['name', 'race', 'location'];
@@ -69,7 +70,24 @@ hunterRouter.patch('/hunters/:id', async (req, res) => {
     return res.status(400).send({ error: 'Invalid updates!' });
   }
   try {
-    const hunter = await Client.findByIdAndUpdate(req.params.id, req.body, {
+    const hunter = await Hunter.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!hunter) {
+      return res.status(404).send({ error: "Hunter not found" });
+    }
+    return res.status(200).send(hunter);
+  } catch (error) {
+    return res.status(500).send({
+      error: 'Failed to update hunter',
+    });
+  }
+});
+
+hunterRouter.put('/hunters/:id', async (req, res) => {
+  try {
+    const hunter = await Hunter.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -86,7 +104,7 @@ hunterRouter.patch('/hunters/:id', async (req, res) => {
 
 hunterRouter.delete('/hunters/:id', async (req, res) => {
   try {
-    const hunter = await Client.findByIdAndDelete(req.params.id);
+    const hunter = await Hunter.findByIdAndDelete(req.params.id);
     if (!hunter) {
       return res.status(404).send({ error: "Hunter not found" });
     }
@@ -94,6 +112,21 @@ hunterRouter.delete('/hunters/:id', async (req, res) => {
   } catch (error) {
     return res.status(500).send({
       error: 'Failed to delete hunter',
+    });
+  }
+});
+
+hunterRouter.delete('/hunters', async (req, res) => {
+  try {
+    const result = await Hunter.deleteMany({});
+    if (result.deletedCount === 0) {
+      return res.status(404).send({ error: "No hunters to delete" });
+    }
+    return res.status(200).send({ message: "All hunters deleted" });
+  }
+  catch (error) {
+    return res.status(500).send({
+      error: 'Failed to delete hunters',
     });
   }
 });

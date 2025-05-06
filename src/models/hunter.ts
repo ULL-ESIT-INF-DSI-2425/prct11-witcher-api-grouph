@@ -1,7 +1,7 @@
 import { Document, connect, model, Schema } from 'mongoose';
 import validator from 'validator';
 
-type Race =
+export type Race =
   | "Human"
   | "Elf"
   | "Dwarf"
@@ -13,7 +13,7 @@ type Race =
   | "Spectral Cat"
   | "Half-Elf";
 
-const RaceValues = [
+export const RaceValues = [
   "Human",
   "Elf",
   "Dwarf",
@@ -26,13 +26,13 @@ const RaceValues = [
   "Half-Elf",
 ] as const;
 
-interface ClientDocumentInterface extends Document {
+interface HunterDocumentInterface extends Document {
   name: string,
   race: Race,
   location: string
 }
 
-const ClientSchema = new Schema<ClientDocumentInterface>({
+const HunterSchema = new Schema<HunterDocumentInterface>({
   name: {
     type: String,
     required: true,
@@ -73,24 +73,4 @@ const ClientSchema = new Schema<ClientDocumentInterface>({
   }
 });
 
-export const Client = model<ClientDocumentInterface>('Client', ClientSchema);
-
-/* 
-const note = new Client({
-    name: 'Gerald',
-    story: 'Comes from Rivia (I think).',
-    profession: 'Witcher',
-});
-
-note.save().then((result) => {
-  console.log(result);
-}).catch((error) => {
-  console.log(error);
-});
-
-Client.find().then((client) => {
-    console.log(client)
-}).catch((error) => {
-    console.log('Uh oh, something went wrong\n\n\n' + error)
-})
-*/
+export const Hunter = model<HunterDocumentInterface>('Hunters', HunterSchema);
