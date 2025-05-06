@@ -51,7 +51,6 @@ interface HunterDocumentInterface extends Document {
 /**
  * Mongoose schema definition for the Hunter model.
  * This schema defines the structure of the Hunter documents in MongoDB.
- * @type {Schema<HunterDocumentInterface>}
  */
 const HunterSchema = new Schema<HunterDocumentInterface>({
   name: {

@@ -2,7 +2,8 @@ import { Document, model, Schema } from 'mongoose';
 import validator from 'validator';
 
 /**
- * type that represents the possible materials for a weapon
+ * Represents the possible materials used in weapons.
+ * @category Types
  */
 export type WeaponMaterial =
   | "Steel"
@@ -17,7 +18,8 @@ export type WeaponMaterial =
   | "Adamantite";
 
 /**
- * type that represents the possible materials for an armor
+ * Represents the possible materials used in armor.
+ * @category Types
  */
 export type ArmorMaterial =
   | "Leather"
@@ -32,7 +34,8 @@ export type ArmorMaterial =
   | "Insectoid Chitin";
 
 /**
- * type that represents the possible materials for a potion
+ * Represents the possible ingredients used in potions.
+ * @category Types
  */
 export type PotionMaterial =
   | "Celandine Flower"
@@ -47,9 +50,16 @@ export type PotionMaterial =
   | "Ghoul Blood";
 
 /**
- * type that represents the possible materials for an item
+ * Represents any material type for an item, including weapons, armors, or potions.
+ * @category Types
  */
 export type GenericMaterial = ArmorMaterial | WeaponMaterial | PotionMaterial;
+
+/**
+ * Object containing all valid values for each type of material.
+ * @readonly
+ * @category Constants
+ */
 export const GenericMaterialValues = {
   ArmorMaterial: [
     "Leather",
@@ -90,7 +100,8 @@ export const GenericMaterialValues = {
 } as const;
 
 /**
- * type that represents the possible effects for a potion
+ * Represents the possible magical effects a potion can produce.
+ * @category Types
  */
 export type Effect =
   | "Vitality Regeneration"
@@ -106,6 +117,11 @@ export type Effect =
   | "Unknown Effect"
   | "None";
 
+/**
+ * Object containing all valid values for potion effects.
+ * @readonly
+ * @category Constants
+ */
 export const EffectValues = {
   VitalityRegeneration: "Vitality Regeneration",
   NightVision: "Night Vision",
@@ -120,6 +136,18 @@ export const EffectValues = {
   UnknownEffect: "Unknown Effect",
 } as const;
 
+/**
+ * Interface for the base item document in MongoDB.
+ * @interface ItemDocumentInterface
+ * @property {string} name - The name of the item.
+ * @property {string} description - The description of the item.
+ * @property {GenericMaterial} material - The material of the item, which can be a weapon, armor, or potion.
+ * @property {number} weight - The weight of the item.
+ * @property {number} price - The price of the item.
+ * @property {number} quantity - The quantity of the item.
+ * @category Models
+ * @extends Document
+ */
 interface ItemDocumentInterface extends Document {
   name: string;
   description: string;
@@ -129,6 +157,10 @@ interface ItemDocumentInterface extends Document {
   quantity: number;
 }
 
+/**
+ * Base schema for items. Used as the parent schema for weapons, armor, and potions.
+ * @remarks Uses `discriminatorKey` to allow subtype differentiation.
+ */
 const ItemSchema = new Schema<ItemDocumentInterface>({
   name: {
     type: String,
@@ -183,9 +215,16 @@ const ItemSchema = new Schema<ItemDocumentInterface>({
   },
 }, { discriminatorKey: 'kind', collection: 'items' });
 
+/**
+ * Base model for all items.
+ * @category Models
+ */
 export const Item = model<ItemDocumentInterface>('Item', ItemSchema);
 
-
+/**
+ * Schema and model for weapon-type items.
+ * @category Models
+ */
 const WeaponSchema = new Schema<ItemDocumentInterface> ({
   material: {
     type: String,
@@ -194,9 +233,15 @@ const WeaponSchema = new Schema<ItemDocumentInterface> ({
   },
 });
 
+/**
+ * Mongoose discriminator for weapons, inheriting from Item.
+ */
 export const Weapon = Item.discriminator<ItemDocumentInterface>('Weapon', WeaponSchema);
 
-
+/**
+ * Schema and model for armor-type items.
+ * @category Models
+ */
 const ArmorSchema = new Schema<ItemDocumentInterface> ({
   material: {
     type: String,
@@ -205,12 +250,24 @@ const ArmorSchema = new Schema<ItemDocumentInterface> ({
   },
 });
 
+/**
+ * Mongoose discriminator for armors, inheriting from Item.
+ */
 export const Armor = Item.discriminator<ItemDocumentInterface>('Armor', ArmorSchema);
 
+/**
+ * Interface for potion documents, extending from Item and adding `effect`.
+ * @interface
+ * @extends ItemDocumentInterface
+ */
 interface PotionDocumentInterface extends ItemDocumentInterface {
   effect: Effect;
 }
 
+/**
+ * Schema and model for potion-type items.
+ * @category Models
+ */
 const PotionSchema = new Schema<PotionDocumentInterface>({
   material: {
     type: String,
@@ -229,52 +286,7 @@ const PotionSchema = new Schema<PotionDocumentInterface>({
   },
 });
 
-export const Potion = Item.discriminator<PotionDocumentInterface>('Potion', PotionSchema);
-
 /**
-const sword = new Weapon({
-  name: 'Sword',
-  description: 'A sharp blade', 
-  material: 'Steel',
-  weight: 3,
-  price: 100,
-});
-
-sword.save().then(() => {
-  console.log('Sword saved');
-  console.log(sword);
-}).catch((error) => {
-  console.error('Error saving sword:', error);
-});
-
-const armor = new Armor({
-  name: 'Armor',
-  description: 'A protective suit',
-  material: 'Leather',
-  weight: 10,
-  price: 200,
-});
-
-armor.save().then(() => {
-  console.log('Armor saved');
-  console.log(armor);
-}).catch((error) => {
-  console.error('Error saving armor:', error);
-});
-
-const potion = new Potion({
-  name: 'Healing Potion',
-  description: 'Restores health',
-  material: 'Mandrake',
-  weight: 1,
-  price: 50,
-  effect: 'Heal',
-});
-potion.save().then(() => {
-  console.log('Potion saved');
-  console.log(potion);
-}
-).catch((error) => {
-  console.error('Error saving potion:', error);
-});
-*/
+ * Mongoose discriminator for potions, inheriting from Item.
+ */
+export const Potion = Item.discriminator<PotionDocumentInterface>('Potion', PotionSchema);
