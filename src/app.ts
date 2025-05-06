@@ -14,8 +14,3 @@ app.use(express.json());
 app.use(hunterRouter);
 app.use(itemRouter);
 app.use(transactionRouter);
-
-app.listen(port, () => {
-  console.log(chalk.blue(`Server is up on port ${port}`));
-  console.log(chalk.magenta(`http://localhost:${port}`));
-});
