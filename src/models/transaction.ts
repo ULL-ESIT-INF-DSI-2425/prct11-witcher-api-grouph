@@ -69,15 +69,19 @@ const TransactionSchema = new Schema<TransactionDocumentInterface>({
     required: true,
     enum: {
       values: transactionTypeValues,
-      message: "Transaction type is not valid",
+      message: "Transaction type is not valid. Must be one of: Purchase, Sale or Return",
     },
   },
   item: {
     type: Schema.ObjectId,
     required: true,
     ref: "Item",
+    validate: {
+      validator: (value: Types.ObjectId) => Types.ObjectId.isValid(value),
+      message: "Item ID is not valid",
+    }
   },
-  quantity: {
+    quantity: {
     type: Number,
     required: true,
     validate: {
@@ -91,13 +95,17 @@ const TransactionSchema = new Schema<TransactionDocumentInterface>({
       required: true,
       enum: {
         values: ["Merchant", "Hunter"],
-        message: "Performed by type is not valid",
+        message: "Performed by must be either Merchant or Hunter",
       },
     },
     id: {
       type: Schema.Types.ObjectId,
       required: true,
       refPath: "performedBy.type",
+      validate: {
+        validator: (value: Types.ObjectId) => Types.ObjectId.isValid(value),
+        message: "Performed by ID is not valid",
+      }
     },
   },
   date: {
