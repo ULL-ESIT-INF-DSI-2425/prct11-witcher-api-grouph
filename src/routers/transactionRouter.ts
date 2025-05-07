@@ -42,7 +42,7 @@ transactionRouter.get("/transactions/:id", async (req, res) => {
 
 transactionRouter.get("/transactions", async (req, res) => {
   try {
-    const { type, item, performedByType, performedById } = req.query;
+    const { type, item, performedByType, performedById, startDate, endDate } = req.query;
     const filter: TransactionFilter = {};
     if (type) {
       if (!transactionTypeValues.includes(type as TransactionType)) {
@@ -121,6 +121,20 @@ transactionRouter.delete("/transactions/:id", async (req, res) => {
   } catch {
     return res.status(500).send({
       error: "Failed to delete transaction",
+    });
+  }
+});
+
+transactionRouter.delete("/transactions", async (req, res) => {
+  try {
+    const transactions = await Transaction.deleteMany({});
+    if (!transactions.deletedCount) {
+      return res.status(404).send({ error: "No transactions to delete" });
+    }
+    return res.status(200).send({ message: "All transactions deleted" });
+  } catch {
+    return res.status(500).send({
+      error: "Failed to delete transactions",
     });
   }
 });
