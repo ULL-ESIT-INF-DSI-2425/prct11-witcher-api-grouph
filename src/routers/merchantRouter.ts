@@ -94,6 +94,38 @@ merchantRouter.patch("/merchants/:id", async (req, res) => {
   }
 });
 
+merchantRouter.put("/merchants/:id", async (req, res) => {
+  const { name, profession, location } = req.body;
+
+  if (!name || !profession || !location) {
+    return res.status(400).send({
+      error: "All fields (name, profession, location) are required for PUT",
+    });
+  }
+
+  if (!ProfessionValues.includes(profession)) {
+    return res.status(400).send({ error: "Invalid profession" });
+  }
+
+  try {
+    const merchant = await Merchant.findByIdAndUpdate(
+      req.params.id,
+      { name, profession, location },
+      { new: true, runValidators: true, overwrite: true }
+    );
+
+    if (!merchant) {
+      return res.status(404).send({ error: "Merchant not found" });
+    }
+
+    return res.status(200).send(merchant);
+  } catch {
+    return res.status(500).send({
+      error: "Failed to update merchant",
+    });
+  }
+});
+
 merchantRouter.delete("/merchants/:id", async (req, res) => {
   try {
     const merchant = await Merchant.findByIdAndDelete(req.params.id);
@@ -104,6 +136,17 @@ merchantRouter.delete("/merchants/:id", async (req, res) => {
   } catch {
     return res.status(500).send({
       error: "Failed to delete merchant",
+    });
+  }
+});
+
+merchantRouter.delete("/merchants", async (req, res) => {
+  try {
+    const merchants = await Merchant.deleteMany();
+    return res.status(200).send(merchants);
+  } catch {
+    return res.status(500).send({
+      error: "Failed to delete all merchants",
     });
   }
 });
