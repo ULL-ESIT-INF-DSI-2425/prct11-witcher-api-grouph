@@ -1,9 +1,12 @@
-import { connect } from 'mongoose';
-import chalk from 'chalk';
+import mongoose from "mongoose";
+import chalk from "chalk";
 
-try {
-  await connect(process.env.MONGODB_URL! || "mongodb://127.0.0.1:27017/TheWitcherAPI");
-  console.log(chalk.green('Connection to MongoDB server established'));
-} catch (error) {
-  console.log(error);
-}
+export const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL!);
+    console.log(chalk.green("Connected to MongoDB Atlas"));
+  } catch (error) {
+    console.error(chalk.red("Failed to connect to MongoDB Atlas"), error);
+    process.exit(1);
+  }
+};
